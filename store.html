@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AliNoVa Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .matrix-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: url("https://i.gifer.com/7efs.gif") center/cover no-repeat;
+      opacity: 0.08;
+      z-index: -1;
+    }
+
+    header {
+      padding: 50px 20px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 42px;
+      color: #00ffae;
+      text-shadow: 0 0 25px #00ffae;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      padding: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .product-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid #00ffae;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 25px rgba(0, 255, 174, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 35px rgba(0, 255, 174, 0.5);
+    }
+
+    .product-card img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 10px #00ffae33;
+    }
+
+    .product-card h3 {
+      margin: 10px 0;
+      font-size: 20px;
+      color: #00ffae;
+    }
+
+    .product-card p {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 15px;
+    }
+
+    .product-card a {
+      display: inline-block;
+      padding: 10px 24px;
+      background: linear-gradient(90deg, #00ffae, #00e0ff);
+      color: #000;
+      font-weight: bold;
+      border-radius: 30px;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+
+    .product-card a::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, #ffffff33 0%, transparent 70%);
+      animation: shine 2.5s linear infinite;
+    }
+
+    .product-card a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #00ffae;
+    }
+
+    @keyframes shine {
+      0% { transform: translate(-100%, -100%) rotate(45deg); }
+      100% { transform: translate(100%, 100%) rotate(45deg); }
+    }
+
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background-color: #25D366;
+      color: white;
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 26px;
+      box-shadow: 0 0 12px #25D366;
+      z-index: 999;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="matrix-bg"></div>
+
+  <header>
+    <h1>متجر AliNoVa</h1>
+  </header>
+
+  <div class="products">
+    <div class="product-card">
+      <img src="images/product1.jpg" alt="هارد">
+      <h3>هارد ديسك 1 تيرا</h3>
+      <p>سريع وآمن لتخزين ملفاتك الكبيرة.</p>
+      <a href="https://wa.me/201105318814?text=أهلاً،%20أنا%20مهتم%20بشراء%20هارد%20ديسك%201%20تيرا%20من%20AliNoVa">اطلب الآن</a>
+    </div>
+
+    <div class="product-card">
+      <img src="images/product2.jpg" alt="راوتر">
+      <h3>راوتر TP-Link</h3>
+      <p>تغطية ممتازة وسرعة Wi-Fi عالية للألعاب والبث.</p>
+      <a href="https://wa.me/201105318814?text=أهلاً،%20أنا%20مهتم%20بشراء%20راوتر%20TP-Link%20من%20AliNoVa">اطلب الآن</a>
+    </div>
+
+    <div class="product-card">
+      <img src="images/product3.jpg" alt="كابل VGA">
+      <h3>كابل VGA</h3>
+      <p>5 متر - جودة صورة عالية من الشاشة للكمبيوتر.</p>
+      <a href="https://wa.me/201105318814?text=أهلاً،%20أنا%20مهتم%20بشراء%20كابل%20VGA%20من%20AliNoVa">اطلب الآن</a>
+    </div>
+  </div>
+
+  <a href="https://wa.me/201105318814" class="whatsapp-float" target="_blank">💬</a>
+</body>
+</html>
+
+3
