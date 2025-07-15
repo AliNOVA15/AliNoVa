@@ -6,50 +6,54 @@
   <title>AliNoVa Store</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * {margin: 0; padding: 0; box-sizing: border-box;}
     body {
       font-family: 'Cairo', sans-serif;
       background: #0a0a0a;
       color: #fff;
       overflow-x: hidden;
-      position: relative;
     }
-
     .matrix-bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
+      top: 0; left: 0;
+      height: 100%; width: 100%;
       background: url("https://i.gifer.com/7efs.gif") center/cover no-repeat;
-      opacity: 0.08;
-      z-index: -1;
+      opacity: 0.08; z-index: -1;
     }
-
     header {
-      padding: 50px 20px 20px;
       text-align: center;
+      padding: 50px 20px 20px;
     }
-
     header h1 {
       font-size: 42px;
       color: #00ffae;
       text-shadow: 0 0 25px #00ffae;
     }
-
-    h2 {
-      text-align: center;
-      color: #00ffae;
-      margin-top: 40px;
-      font-size: 28px;
+    .tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 30px 10px 10px;
+      gap: 15px;
     }
-
-    .products {
+    .tab-button {
+      background: #00ffae;
+      color: #000;
+      border: none;
+      border-radius: 30px;
+      padding: 10px 25px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .tab-button:hover, .tab-button.active {
+      background: #00e0ff;
+    }
+    .tab-content {
+      display: none;
+      padding: 20px 10px;
+    }
+    .tab-content.active {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 30px;
@@ -57,7 +61,6 @@
       max-width: 1200px;
       margin: auto;
     }
-
     .product-card {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid #00ffae;
@@ -66,58 +69,31 @@
       text-align: center;
       backdrop-filter: blur(8px);
       box-shadow: 0 0 25px rgba(0, 255, 174, 0.2);
-      transition: all 0.3s ease;
     }
-
-    .product-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 0 35px rgba(0, 255, 174, 0.5);
-    }
-
     .product-card img {
       max-width: 100%;
       border-radius: 10px;
       margin-bottom: 15px;
-      box-shadow: 0 0 10px #00ffae33;
     }
-
     .product-card h3 {
+      color: #00ffae;
+      margin-bottom: 5px;
+    }
+    .product-card .price {
+      color: #00e0ff;
       margin: 10px 0;
-      font-size: 20px;
-      color: #00ffae;
-    }
-
-    .product-card p {
-      font-size: 14px;
-      color: #ccc;
-      margin-bottom: 10px;
-    }
-
-    .price {
-      font-size: 16px;
-      color: #00ffae;
-      margin-bottom: 15px;
       font-weight: bold;
     }
-
     .product-card a {
-      display: inline-block;
-      padding: 10px 24px;
       background: linear-gradient(90deg, #00ffae, #00e0ff);
       color: #000;
+      padding: 10px 20px;
+      border-radius: 25px;
       font-weight: bold;
-      border-radius: 30px;
       text-decoration: none;
-      position: relative;
-      overflow: hidden;
-      transition: 0.3s;
+      display: inline-block;
+      margin-top: 10px;
     }
-
-    .product-card a:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 30px #00ffae;
-    }
-
     .whatsapp-float {
       position: fixed;
       bottom: 20px;
@@ -144,62 +120,90 @@
     <h1>متجر AliNoVa</h1>
   </header>
 
-  <!-- 🧠 قسم الكمبيوتر -->
-  <h2>🧠 قسم الكمبيوتر</h2>
-  <div class="products">
-    <!-- معالجات، رامات، كروت، تخزين -->
+  <div class="tabs">
+    <button class="tab-button active" onclick="showTab('pc')">🧠 الكمبيوتر</button>
+    <button class="tab-button" onclick="showTab('laptops')">💻 اللابات</button>
+    <button class="tab-button" onclick="showTab('cameras')">🎥 الكاميرات</button>
+    <button class="tab-button" onclick="showTab('offers')">🔥 العروض</button>
+  </div>
+
+  <div id="pc" class="tab-content active">
     <div class="product-card">
-      <img src="images/placeholder.jpg" alt="Intel i5">
       <h3>Intel Core i5</h3>
-      <p>معالج متوسط مناسب للألعاب والعمل المكتبي.</p>
+      <p>معالج قوي مناسب للألعاب والمونتاج.</p>
       <div class="price">3200 جنيه</div>
       <a href="#">اطلب الآن</a>
     </div>
     <div class="product-card">
-      <img src="images/placeholder.jpg" alt="8GB RAM DDR4">
       <h3>RAM DDR4 8GB</h3>
-      <p>ذاكرة عشوائية عالية الأداء.</p>
+      <p>أداء ممتاز وسرعة عالية.</p>
       <div class="price">850 جنيه</div>
+      <a href="#">اطلب الآن</a>
+    </div>
+    <div class="product-card">
+      <h3>SSD 512GB NVMe</h3>
+      <p>سرعة قراءة وكتابة رهيبة.</p>
+      <div class="price">1600 جنيه</div>
+      <a href="#">اطلب الآن</a>
+    </div>
+    <div class="product-card">
+      <h3>Power Supply 600W</h3>
+      <p>كفاءة ممتازة وثبات.</p>
+      <div class="price">950 جنيه</div>
       <a href="#">اطلب الآن</a>
     </div>
   </div>
 
-  <!-- 💻 قسم اللابات -->
-  <h2>💻 قسم اللابات</h2>
-  <div class="products">
+  <div id="laptops" class="tab-content">
     <div class="product-card">
-      <img src="images/placeholder.jpg" alt="Laptop HP">
       <h3>لابتوب HP i5</h3>
-      <p>لابتوب سريع مناسب للدراسة والعمل.</p>
+      <p>شاشة 15.6" / SSD / بطارية قوية.</p>
       <div class="price">12500 جنيه</div>
       <a href="#">اطلب الآن</a>
     </div>
-  </div>
-
-  <!-- 🔐 قسم الكاميرات -->
-  <h2>🔐 قسم الكاميرات</h2>
-  <div class="products">
     <div class="product-card">
-      <img src="images/placeholder.jpg" alt="كاميرا مراقبة">
-      <h3>كاميرا مراقبة 5MP</h3>
-      <p>رؤية ليلية وجودة عالية.</p>
-      <div class="price">850 جنيه</div>
+      <h3>شاحن لابتوب HP</h3>
+      <p>أصلي وموثوق.</p>
+      <div class="price">450 جنيه</div>
       <a href="#">اطلب الآن</a>
     </div>
   </div>
 
-  <!-- 🔥 قسم العروض -->
-  <h2>🔥 عروض AliNoVa</h2>
-  <div class="products">
+  <div id="cameras" class="tab-content">
     <div class="product-card">
-      <img src="images/placeholder.jpg" alt="عرض الجيمنج">
+      <h3>كاميرا مراقبة HD</h3>
+      <p>تصوير ليلي / مقاومة للعوامل.</p>
+      <div class="price">750 جنيه</div>
+      <a href="#">اطلب الآن</a>
+    </div>
+    <div class="product-card">
+      <h3>DVR 4 قنوات</h3>
+      <p>تسجيل مستمر وإمكانيات تحكم.</p>
+      <div class="price">1150 جنيه</div>
+      <a href="#">اطلب الآن</a>
+    </div>
+  </div>
+
+  <div id="offers" class="tab-content">
+    <div class="product-card">
       <h3>🎮 باقة الجيمنج</h3>
       <p>كيبورد RGB + ماوس ألعاب + سماعة جيمنج</p>
       <div class="price">1350 بدل 1700 جنيه</div>
-      <a href="#">احجز العرض الآن</a>
+      <a href="#">احجز العرض</a>
     </div>
   </div>
 
   <a href="https://wa.me/201105318814" class="whatsapp-float" target="_blank">💬</a>
+
+  <script>
+    function showTab(tabId) {
+      const tabs = document.querySelectorAll('.tab-content');
+      const buttons = document.querySelectorAll('.tab-button');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      buttons.forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
 </body>
 </html>
