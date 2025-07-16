@@ -121,35 +121,35 @@
   </header>
 
   <div class="tabs">
-    <button class="tab-button active" onclick="showTab('pc')">🖥 الكمبيوتر</button>
-    <button class="tab-button" onclick="showTab('laptops')">💻 اللابات</button>
-    <button class="tab-button" onclick="showTab('cameras')">🎥 الكاميرات</button>
-    <button class="tab-button" onclick="showTab('offers')">👌 العروض</button>
+    <button class="tab-button active" onclick="showTab('pc', this)">🖥 الكمبيوتر</button>
+    <button class="tab-button" onclick="showTab('laptops', this)">💻 اللابات</button>
+    <button class="tab-button" onclick="showTab('cameras', this)">🎥 الكاميرات</button>
+    <button class="tab-button" onclick="showTab('offers', this)">👌 العروض</button>
   </div>
 
   <div id="pc" class="tab-content active">
     <div class="product-card">
       <h3>Intel Core i5</h3>
       <p>معالج قوي مناسب للألعاب والمونتاج.</p>
-      <div class="price">3200 جنيه</div>
+      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
       <a href="#">اطلب الآن</a>
     </div>
     <div class="product-card">
       <h3>RAM DDR4 8GB</h3>
       <p>أداء ممتاز وسرعة عالية.</p>
-      <div class="price">850 جنيه</div>
+      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
       <a href="#">اطلب الآن</a>
     </div>
     <div class="product-card">
       <h3>SSD 512GB NVMe</h3>
       <p>سرعة قراءة وكتابة رهيبة.</p>
-      <div class="price">1600 جنيه</div>
+      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
       <a href="#">اطلب الآن</a>
     </div>
     <div class="product-card">
       <h3>Power Supply 600W</h3>
       <p>كفاءة ممتازة وثبات.</p>
-      <div class="price">950 جنيه</div>
+      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
       <a href="#">اطلب الآن</a>
     </div>
   </div>
@@ -158,13 +158,13 @@
     <div class="product-card">
       <h3>لابتوب HP i5</h3>
       <p>شاشة 15.6" / SSD / بطارية قوية.</p>
-      <div class="price">12500 جنيه</div>
+      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
       <a href="#">اطلب الآن</a>
     </div>
     <div class="product-card">
       <h3>شاحن لابتوب HP</h3>
       <p>أصلي وموثوق.</p>
-      <div class="price">450 جنيه</div>
+      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
       <a href="#">اطلب الآن</a>
     </div>
   </div>
@@ -173,13 +173,13 @@
     <div class="product-card">
       <h3>كاميرا مراقبة HD</h3>
       <p>تصوير ليلي / مقاومة للعوامل.</p>
-      <div class="price">750 جنيه</div>
+      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
       <a href="#">اطلب الآن</a>
     </div>
     <div class="product-card">
       <h3>DVR 4 قنوات</h3>
       <p>تسجيل مستمر وإمكانيات تحكم.</p>
-      <div class="price">1150 جنيه</div>
+      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
       <a href="#">اطلب الآن</a>
     </div>
   </div>
@@ -188,7 +188,7 @@
     <div class="product-card">
       <h3>🎮 باقة الجيمنج</h3>
       <p>كيبورد RGB + ماوس ألعاب + سماعة جيمنج</p>
-      <div class="price">1350 بدل 1700 جنيه</div>
+      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
       <a href="#">احجز العرض</a>
     </div>
   </div>
@@ -196,13 +196,13 @@
   <a href="https://wa.me/201105318814" class="whatsapp-float" target="_blank">💬</a>
 
   <script>
-    function showTab(tabId) {
+    function showTab(tabId, element) {
       const tabs = document.querySelectorAll('.tab-content');
       const buttons = document.querySelectorAll('.tab-button');
       tabs.forEach(tab => tab.classList.remove('active'));
       buttons.forEach(btn => btn.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
-      event.target.classList.add('active');
+      element.classList.add('active');
     }
   </script>
 </body>
