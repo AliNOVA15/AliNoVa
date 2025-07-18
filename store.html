@@ -1,209 +1,264 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>AliNoVa Store</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * {margin: 0; padding: 0; box-sizing: border-box;}
     body {
-      font-family: 'Cairo', sans-serif;
-      background: #0a0a0a;
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      background-attachment: fixed;
       color: #fff;
-      overflow-x: hidden;
+      font-family: 'Tajawal', sans-serif;
+      margin: 0;
+      padding: 0;
     }
-    .matrix-bg {
+
+    #cart {
       position: fixed;
-      top: 0; left: 0;
-      height: 100%; width: 100%;
-      background: url("https://i.gifer.com/7efs.gif") center/cover no-repeat;
-      opacity: 0.08; z-index: -1;
-    }
-    header {
-      text-align: center;
-      padding: 50px 20px 20px;
-    }
-    header h1 {
-      font-size: 42px;
-      color: #00ffae;
-      text-shadow: 0 0 25px #00ffae;
-    }
-    .tabs {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin: 30px 10px 10px;
-      gap: 15px;
-    }
-    .tab-button {
-      background: #00ffae;
-      color: #000;
-      border: none;
-      border-radius: 30px;
-      padding: 10px 25px;
+      top: 15px;
+      left: 15px;
+      background: #222;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 10px;
       font-weight: bold;
+      box-shadow: 0 0 10px #000;
+      z-index: 999;
       cursor: pointer;
-      transition: 0.3s;
     }
-    .tab-button:hover, .tab-button.active {
-      background: #00e0ff;
+
+    #cart-details {
+      background: #333;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      max-height: 300px;
+      overflow-y: auto;
     }
+
+    .tab-button {
+      background: #444;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .tab-button.active, .tab-button:hover {
+      background: #6c63ff;
+    }
+
     .tab-content {
       display: none;
-      padding: 20px 10px;
-    }
-    .tab-content.active {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 30px;
-      padding: 30px;
-      max-width: 1200px;
-      margin: auto;
-    }
-    .product-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid #00ffae;
-      border-radius: 16px;
       padding: 20px;
-      text-align: center;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 25px rgba(0, 255, 174, 0.2);
-    }
-    .product-card img {
-      max-width: 100%;
       border-radius: 10px;
-      margin-bottom: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      margin: 15px;
     }
-    .product-card h3 {
-      color: #00ffae;
-      margin-bottom: 5px;
+
+    .tab-content.active {
+      display: block;
     }
-    .product-card .price {
-      color: #00e0ff;
-      margin: 10px 0;
-      font-weight: bold;
+
+    .product {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px #000;
     }
-    .product-card a {
-      background: linear-gradient(90deg, #00ffae, #00e0ff);
-      color: #000;
-      padding: 10px 20px;
-      border-radius: 25px;
-      font-weight: bold;
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 10px;
-    }
-    .whatsapp-float {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background-color: #25D366;
+
+    button {
+      padding: 8px 14px;
+      margin: 5px 5px 0 0;
+      background-color: #6c63ff;
       color: white;
-      border-radius: 50%;
-      width: 55px;
-      height: 55px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 26px;
-      box-shadow: 0 0 12px #25D366;
-      z-index: 999;
-      text-decoration: none;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #4a43e3;
+    }
+
+    .tabs-container {
+      text-align: center;
+      margin-top: 80px;
+    }
+
+    .send-btn {
+      display: block;
+      margin: 20px auto;
+    }
+
+    @media (max-width: 600px) {
+      .product {
+        font-size: 14px;
+      }
+
+      button, .tab-button {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+
+      .tabs-container {
+        flex-wrap: wrap;
+      }
+
+      #cart {
+        width: calc(100% - 30px);
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="matrix-bg"></div>
 
-  <header>
-    <h1>متجر AliNoVa</h1>
-  </header>
+<div id="cart" onclick="toggleCartDetails()">
+  السلة: <span id="cart-count">0</span> منتج
+  <div id="cart-details" style="display:none;"></div>
+</div>
 
-  <div class="tabs">
-    <button class="tab-button active" onclick="showTab('pc', this)">🖥 الكمبيوتر</button>
-    <button class="tab-button" onclick="showTab('laptops', this)">💻 اللابات</button>
-    <button class="tab-button" onclick="showTab('cameras', this)">🎥 الكاميرات</button>
-    <button class="tab-button" onclick="showTab('offers', this)">👌 العروض</button>
+<div class="tabs-container">
+  <button class="tab-button active" onclick="openTab('pc', event)">💻 الكمبيوتر</button>
+  <button class="tab-button" onclick="openTab('laptops', event)">💼 اللابات</button>
+  <button class="tab-button" onclick="openTab('cameras', event)">📹 الكاميرات</button>
+  <button class="tab-button" onclick="openTab('offers', event)">🔥 العروض</button>
+</div>
+
+<!-- قسم الكمبيوتر -->
+<div id="pc" class="tab-content active">
+  <div class="product">
+    <p>معالج Intel Core i5</p>
+    <p>💬 خش اسأل على الخصم الـ 20%</p>
+    <button onclick="addToCart('معالج Intel Core i5')">إضافة للسلة</button>
+    <button onclick="askDiscount('معالج Intel Core i5')">📞 اسأل عن الخصم</button>
   </div>
+  <p>🟢 تقدر تضيف هنا</p>
 
-  <div id="pc" class="tab-content active">
-    <div class="product-card">
-      <h3>Intel Core i5</h3>
-      <p>معالج قوي مناسب للألعاب والمونتاج.</p>
-      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
-      <a href="#">اطلب الآن</a>
-    </div>
-    <div class="product-card">
-      <h3>RAM DDR4 8GB</h3>
-      <p>أداء ممتاز وسرعة عالية.</p>
-      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
-      <a href="#">اطلب الآن</a>
-    </div>
-    <div class="product-card">
-      <h3>SSD 512GB NVMe</h3>
-      <p>سرعة قراءة وكتابة رهيبة.</p>
-      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
-      <a href="#">اطلب الآن</a>
-    </div>
-    <div class="product-card">
-      <h3>Power Supply 600W</h3>
-      <p>كفاءة ممتازة وثبات.</p>
-      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
-      <a href="#">اطلب الآن</a>
-    </div>
+  <div class="product">
+    <p>رامات 8GB DDR4</p>
+    <p>💬 خش اسأل على الخصم الـ 20%</p>
+    <button onclick="addToCart('رامات 8GB DDR4')">إضافة للسلة</button>
+    <button onclick="askDiscount('رامات 8GB DDR4')">📞 اسأل عن الخصم</button>
   </div>
+  <p>🟢 تقدر تضيف هنا</p>
+</div>
 
-  <div id="laptops" class="tab-content">
-    <div class="product-card">
-      <h3>لابتوب HP i5</h3>
-      <p>شاشة 15.6" / SSD / بطارية قوية.</p>
-      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
-      <a href="#">اطلب الآن</a>
-    </div>
-    <div class="product-card">
-      <h3>شاحن لابتوب HP</h3>
-      <p>أصلي وموثوق.</p>
-      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
-      <a href="#">اطلب الآن</a>
-    </div>
+<!-- قسم اللابات -->
+<div id="laptops" class="tab-content">
+  <div class="product">
+    <p>HP ProBook 450 G9</p>
+    <p>💸 السعر: ...</p>
+    <p>💬 اسأل على الخصم الـ 15%</p>
+    <button onclick="addToCart('HP ProBook 450 G9')">إضافة للسلة</button>
+    <button onclick="askDiscount('HP ProBook 450 G9')">📞 اسأل عن الخصم</button>
   </div>
+  <p>🟢 تقدر تضيف هنا</p>
+</div>
 
-  <div id="cameras" class="tab-content">
-    <div class="product-card">
-      <h3>كاميرا مراقبة HD</h3>
-      <p>تصوير ليلي / مقاومة للعوامل.</p>
-      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
-      <a href="#">اطلب الآن</a>
-    </div>
-    <div class="product-card">
-      <h3>DVR 4 قنوات</h3>
-      <p>تسجيل مستمر وإمكانيات تحكم.</p>
-      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
-      <a href="#">اطلب الآن</a>
-    </div>
+<!-- قسم الكاميرات -->
+<div id="cameras" class="tab-content">
+  <div class="product">
+    <p>كاميرا مراقبة 4MP</p>
+    <p>💬 خش اسأل على الخصم الـ 20%</p>
+    <button onclick="addToCart('كاميرا مراقبة 4MP')">إضافة للسلة</button>
+    <button onclick="askDiscount('كاميرا مراقبة 4MP')">📞 اسأل عن الخصم</button>
   </div>
+  <p>🟢 تقدر تضيف هنا</p>
+</div>
 
-  <div id="offers" class="tab-content">
-    <div class="product-card">
-      <h3>🎮 باقة الجيمنج</h3>
-      <p>كيبورد RGB + ماوس ألعاب + سماعة جيمنج</p>
-      <div class="price">اسأل عن خصم 20% لفترة محدودة!</div>
-      <a href="#">احجز العرض</a>
-    </div>
+<!-- قسم العروض -->
+<div id="offers" class="tab-content">
+  <div class="product">
+    <p>عرض: تنظيف وصيانة كمبيوتر بـ 99 جنيه</p>
+    <p>💬 خش اسأل على الخصم الـ 20%</p>
+    <button onclick="addToCart('عرض تنظيف وصيانة')">إضافة للسلة</button>
+    <button onclick="askDiscount('عرض تنظيف وصيانة')">📞 اسأل عن الخصم</button>
   </div>
+  <p>🟢 تقدر تضيف هنا</p>
+</div>
 
-  <a href="https://wa.me/201105318814" class="whatsapp-float" target="_blank">💬</a>
+<!-- زر ارسال الطلب -->
+<button class="send-btn" onclick="sendToWhatsApp()">طلب واتساب</button>
 
-  <script>
-    function showTab(tabId, element) {
-      const tabs = document.querySelectorAll('.tab-content');
-      const buttons = document.querySelectorAll('.tab-button');
-      tabs.forEach(tab => tab.classList.remove('active'));
-      buttons.forEach(btn => btn.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      element.classList.add('active');
+<script>
+  let cart = [];
+
+  function openTab(tabId, event) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function addToCart(product) {
+    if (!cart.includes(product)) {
+      cart.push(product);
+      document.getElementById('cart-count').innerText = cart.length;
+      updateCartDetails();
+    } else {
+      alert("المنتج موجود بالفعل في السلة!");
     }
-  </script>
+  }
+
+  function toggleCartDetails() {
+    const details = document.getElementById("cart-details");
+    if (details.style.display === "none") {
+      updateCartDetails();
+      details.style.display = "block";
+    } else {
+      details.style.display = "none";
+    }
+  }
+
+  function updateCartDetails() {
+    const details = document.getElementById("cart-details");
+    if (cart.length === 0) {
+      details.innerHTML = "<p>السلة فاضية</p>";
+      return;
+    }
+
+    details.innerHTML = cart.map((item, index) =>
+      `<div style="margin-bottom:5px;">
+        ${index + 1}. ${item}
+        <button onclick="removeFromCart(${index})" style="background:red; color:white; border:none; padding:3px 8px; border-radius:5px; margin-right:10px;">❌</button>
+      </div>`
+    ).join('');
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    document.getElementById('cart-count').innerText = cart.length;
+    updateCartDetails();
+  }
+
+  function sendToWhatsApp() {
+    if (cart.length === 0) {
+      alert("السلة فاضية!");
+      return;
+    }
+    const message = `🛒 طلب جديد من AliNoVa:\n\n${cart.map((item, i) => `✅ ${i + 1}. ${item}`).join("\n")}\n\nإجمالي: ${cart.length} منتج`;
+    const number = "201105318814";
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  }
+
+  function askDiscount(product) {
+    const message = `👋 ممكن أعرف الخصم المتاح على: ${product}؟`;
+    const number = "201105318814";
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  }
+</script>
 </body>
 </html>
