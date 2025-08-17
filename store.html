@@ -41,6 +41,18 @@
       z-index: 1000;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
+    /* الرقم على الأيقونة */
+    .cart-count {
+      position: absolute;
+      top: 10px;
+      left: 50px;
+      background: red;
+      color: #fff;
+      font-size: 0.8rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+      font-weight: bold;
+    }
 
     /* البانل بتاع السلة */
     .cart {
@@ -51,17 +63,17 @@
       padding: 15px;
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      max-width: 250px;
+      max-width: 280px;
       z-index: 999;
-      display: none; /* افتراضي مقفولة */
+      display: none;
     }
     .cart.open {display: block;}
-
     .cart h3 {margin-bottom: 10px;color: #00ffff;}
-    .cart-item {font-size: 0.9rem;margin-bottom: 5px;display: flex;justify-content: space-between;align-items: center;}
+    .cart-item {font-size: 0.9rem;margin-bottom: 10px;}
     .cart-total {font-weight: bold;margin-top: 10px;}
     .cart button {margin-top: 10px;padding: 8px 12px;border: none;background: #00ff99;color: #000;border-radius: 8px;cursor: pointer;}
-    .remove-btn {background: #ff4d4d;color: #fff;border: none;padding: 4px 8px;border-radius: 5px;cursor: pointer;} 
+    .remove-btn {background: #ff4d4d;color: #fff;border: none;padding: 4px 8px;border-radius: 5px;cursor: pointer;margin-left: 5px;} 
+    .qty-btn {background: #00d1ff;color: #000;border: none;padding: 3px 7px;border-radius: 5px;cursor: pointer;margin: 0 3px;}
 
     /* على الموبايل تبقى سلايد من تحت */
     @media (max-width: 768px) {
@@ -74,7 +86,7 @@
         border-radius: 15px 15px 0 0;
         text-align: center;
       }
-      .cart-item {font-size: 0.8rem;}
+      .cart-item {font-size: 0.85rem;}
     }
   </style>
 </head>
@@ -89,7 +101,10 @@
   </nav>
 
   <!-- أيقونة السلة -->
-  <div class="cart-toggle" onclick="toggleCart()">🛒</div>
+  <div class="cart-toggle" onclick="toggleCart()">
+    🛒
+    <span class="cart-count" id="cart-count">0</span>
+  </div>
 
   <!-- السلة -->
   <div class="cart" id="cart">
@@ -164,7 +179,8 @@
       { name: "كاميرا مراقبة", desc: "عدسة ليلية - 1080p", price: 700, offer: true }
     ];
 
-    const cart = [];
+
+    let cart = [];
 
     function renderProducts() {
       const productList = document.getElementById("product-list");
@@ -191,25 +207,47 @@
     }
 
     function addToCart(index) {
-      cart.push(products[index]);
+      const item = products[index];
+      const found = cart.find(p => p.name === item.name);
+      if (found) {
+        found.qty += 1;
+      } else {
+        cart.push({ ...item, qty: 1 });
+      }
       updateCart();
     }
 
     function updateCart() {
       const cartItems = document.getElementById("cart-items");
       const cartTotal = document.getElementById("cart-total");
+      const cartCount = document.getElementById("cart-count");
+
       cartItems.innerHTML = "";
-      let total = 0;
+      let total = 0, count = 0;
+
       cart.forEach((item, i) => {
-        total += item.price;
+        total += item.price * item.qty;
+        count += item.qty;
         cartItems.innerHTML += `
           <div class="cart-item">
-            ${item.name} - ${item.price} جنيه
+            ${item.name} - ${item.price} جنيه 
+            <br>
+            <button class="qty-btn" onclick="changeQty(${i}, -1)">-</button>
+            ${item.qty}
+            <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
             <button class="remove-btn" onclick="removeFromCart(${i})">🗑️</button>
           </div>
         `;
       });
+
       cartTotal.textContent = `الإجمالي: ${total} جنيه`;
+      cartCount.textContent = count;
+    }
+
+    function changeQty(i, delta) {
+      cart[i].qty += delta;
+      if (cart[i].qty <= 0) cart.splice(i, 1);
+      updateCart();
     }
 
     function removeFromCart(i) {
@@ -220,9 +258,9 @@
     function sendWhatsApp() {
       let message = "طلب جديد من AliNoVa:\n";
       cart.forEach(item => {
-        message += `- ${item.name} (${item.price} جنيه)\n`;
+        message += `- ${item.name} (${item.price} جنيه) × ${item.qty}\n`;
       });
-      const total = cart.reduce((acc, item) => acc + item.price, 0);
+      const total = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
       message += `\nالإجمالي: ${total} جنيه`;
       const encoded = encodeURIComponent(message);
       window.open(`https://wa.me/201105318814?text=${encoded}`, '_blank');
