@@ -5,191 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AliNoVa Store</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
- <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Tajawal', sans-serif;
-    scroll-behavior: smooth;
-  }
-
-  body {
-    background: linear-gradient(135deg, #1e1e2f, #3a3a5a);
-    color: #fff;
-    padding: 20px;
-  }
-
-  header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-
-  header h1 {
-    font-size: 2.2rem;
-    color: #00d1ff;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-  }
-
-  nav {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 30px;
-  }
-
-  .tab-btn {
-    background-color: transparent;
-    color: #00ffff;
-    border: 2px solid #00ffff;
-    padding: 8px 12px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-
-  .tab-btn.active {
-    background-color: #00ffff;
-    color: #000;
-  }
-
-  .tab-content {
-    display: none;
-  }
-
-  .tab-content.active {
-    display: block;
-  }
-
-  .products-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 15px;
-  }
-
-  .product {
-    background: #2c2c3e;
-    padding: 15px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s, opacity 0.5s;
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  .product.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .product h2 {
-    color: #00ffff;
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-  }
-
-  .product p {
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-  }
-
-  .product button {
-    padding: 8px 12px;
-    border: none;
-    background: #00d1ff;
-    color: #000;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-
-  .product button:hover {
-    background: #00aacc;
-  }
-
+  <style>
+    * {margin: 0;padding: 0;box-sizing: border-box;font-family: 'Tajawal', sans-serif;scroll-behavior: smooth;}
+    body {background: linear-gradient(135deg, #1e1e2f, #3a3a5a);color: #fff;padding: 20px;}
+    header {text-align: center;margin-bottom: 40px;}
+    header h1 {font-size: 2.5rem;color: #00d1ff;text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);}
+    nav {display: flex;justify-content: center;gap: 20px;margin-bottom: 30px;}
+    .tab-btn {background-color: transparent;color: #00ffff;border: 2px solid #00ffff;padding: 10px 15px;border-radius: 10px;font-weight: bold;cursor: pointer;transition: 0.3s;}
+    .tab-btn.active {background-color: #00ffff;color: #000;}
+    .tab-content {display: none;}
+    .tab-content.active {display: block;}
+    .products-container {display: grid;grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));gap: 20px;}
+    .product {background: #2c2c3e;padding: 15px;border-radius: 15px;box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);transition: transform 0.3s, opacity 0.5s;opacity: 0;transform: translateY(20px);}
+    .product.show {opacity: 1;transform: translateY(0);}
+    .product h2 {color: #00ffff;font-size: 1.2rem;margin-bottom: 10px;}
+    .product p {font-size: 0.95rem;margin-bottom: 10px;}
+    .product button {padding: 8px 12px;border: none;background: #00d1ff;color: #000;border-radius: 8px;cursor: pointer;transition: background 0.3s;}
+    .product button:hover {background: #00aacc;}
+    .cart {position: fixed;top: 20px;left: 20px;background: #1e1e2f;padding: 15px;border-radius: 15px;box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);max-width: 250px;z-index: 999;}
+    .cart h3 {margin-bottom: 10px;color: #00ffff;}
+    .cart-item {font-size: 0.9rem;margin-bottom: 5px;display: flex;justify-content: space-between;align-items: center;}
+    .cart-total {font-weight: bold;margin-top: 10px;}
+    .cart button {margin-top: 10px;padding: 8px 12px;border: none;background: #00ff99;color: #000;border-radius: 8px;cursor: pointer;}
+    .remove-btn {background: #ff4d4d;color: #fff;border: none;padding: 4px 8px;border-radius: 5px;cursor: pointer;} 
+    /* حل مشكلة السلة على الموبايل */
+@media (max-width: 768px) {
   .cart {
-    position: relative;
-    background: #1e1e2f;
-    padding: 15px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
     max-width: 100%;
-    margin-bottom: 20px;
+    border-radius: 15px 15px 0 0;
+    padding: 10px;
+    text-align: center;
   }
-
-  .cart h3 {
-    margin-bottom: 10px;
-    color: #00ffff;
-  }
-
   .cart-item {
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    font-size: 0.8rem;
   }
+}
 
-  .cart-total {
-    font-weight: bold;
-    margin-top: 10px;
-  }
+/* تحسين وضوح أزرار التبويبات */
+.tab-btn {
+  background-color: transparent;
+  color: #fff; /* خليها أبيض بدل سماوي */
+  border: 2px solid #00ffff;
+}
 
-  .cart button {
-    margin-top: 10px;
-    padding: 8px 12px;
-    border: none;
-    background: #00ff99;
-    color: #000;
-    border-radius: 8px;
-    cursor: pointer;
-  }
+.tab-btn.active {
+  background-color: #00ffff;
+  color: #000;
+}
 
-  .remove-btn {
-    background: #ff4d4d;
-    color: #fff;
-    border: none;
-    padding: 4px 8px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  /* تحسين الموبايل */
-  @media (max-width: 768px) {
-    body {
-      padding: 10px;
-    }
-
-    header h1 {
-      font-size: 1.8rem;
-    }
-
-    nav {
-      gap: 8px;
-    }
-
-    .products-container {
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    }
-
-    .product {
-      padding: 10px;
-    }
-
-    .product h2 {
-      font-size: 1rem;
-    }
-
-    .cart {
-      position: relative;
-      margin: 0 auto 20px auto;
-      width: 100%;
-    }
-  }
-</style>
-
+  </style>
 </head>
 <body>
   <header>
