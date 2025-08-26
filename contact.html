@@ -6,9 +6,7 @@
   <title>تواصل معنا - AliNoVa</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -24,35 +22,21 @@
       align-items: center;
       position: relative;
       padding: 20px;
+      transition: background 0.3s, color 0.3s;
     }
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
+    body.light { background-color: #f5f5f5; color: #111; }
+    body.light a { background: #00d1ff; color: #000; }
 
-    h1 {
-      font-size: 42px;
-      color: #00eaff;
-      text-shadow: 0 0 20px #00eaff;
-      margin-bottom: 20px;
-    }
+    canvas { position: fixed; top: 0; left: 0; z-index: -1; }
 
-    p {
-      font-size: 18px;
-      color: #ccc;
-      margin-bottom: 30px;
-    }
+    h1 { font-size: 42px; color: #00eaff; text-shadow: 0 0 20px #00eaff; margin-bottom: 20px; transition: color 0.3s, text-shadow 0.3s; }
+    body.light h1 { color: #00d1ff; text-shadow: 0 0 10px #00d1ff; }
 
-    .contact-links {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      align-items: center;
-    }
+    p { font-size: 18px; color: #ccc; margin-bottom: 30px; transition: color 0.3s; }
+    body.light p { color: #444; }
 
+    .contact-links { display: flex; flex-direction: column; gap: 15px; align-items: center; }
     .contact-links a {
       background: #00eaff;
       color: black;
@@ -64,17 +48,41 @@
       transition: 0.3s;
       box-shadow: 0 0 10px #00eaff55;
     }
+    .contact-links a:hover { transform: scale(1.05); background: #00c2e2; box-shadow: 0 0 20px #00eaffaa; }
 
-    .contact-links a:hover {
-      transform: scale(1.05);
-      background: #00c2e2;
-      box-shadow: 0 0 20px #00eaffaa;
+    .toggle-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #00eaff;
+      color: black;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 1001;
+      font-weight: bold;
+      box-shadow: 0 0 10px #00eaff;
+    }
+
+    .lang-btn {
+      position: fixed;
+      top: 20px;
+      right: 140px;
+      background: #00eaff;
+      color: black;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 1001;
+      font-weight: bold;
+      box-shadow: 0 0 10px #00eaff;
     }
 
     @media (max-width: 500px) {
       h1 { font-size: 32px; }
       p { font-size: 16px; }
       .contact-links a { font-size: 16px; padding: 10px 20px; }
+      .toggle-btn, .lang-btn { padding: 8px 12px; font-size: 14px; }
     }
   </style>
 </head>
@@ -82,48 +90,56 @@
 
   <canvas id="matrix"></canvas>
 
-  <h1>تواصل معنا</h1>
-  <p>محتاج مساعدة؟ عايز تحجز خدمة؟ تقدر تكلمنا على:</p>
+  <div class="toggle-btn" onclick="toggleTheme()">الوضع الليلي</div>
+  <div class="lang-btn" onclick="toggleLang()">🇪🇬</div>
+
+  <h1 id="title">تواصل معنا</h1>
+  <p id="desc">محتاج مساعدة؟ عايز تحجز خدمة؟ تقدر تكلمنا على:</p>
 
   <div class="contact-links">
-    <a href="https://wa.me/201105318814?text=السلام%20عليكم،%20عندي%20استفسار%20بخصوص%20خدمات%20AliNoVa" target="_blank">💬 واتساب</a>
-    <a href="mailto:ali2nova11@gmail.com">📧 البريد الإلكتروني</a>
-    <a href="tel:+201105318814">📞 اتصال مباشر</a>
+    <a id="wa-link" href="https://wa.me/201105318814?text=السلام%20عليكم،%20عندي%20استفسار%20بخصوص%20خدمات%20AliNoVa" target="_blank">💬 واتساب</a>
+    <a id="mail-link" href="mailto:alinova.it@gmail.com">📧 البريد الإلكتروني</a>
+    <a id="call-link" href="tel:+201105318814">📞 اتصال مباشر</a>
   </div>
 
   <script>
+    // --- Theme ---
+    function toggleTheme() { document.body.classList.toggle('light'); }
+
+    // --- Language ---
+    let lang = 'ar';
+    function toggleLang() {
+      lang = (lang === 'ar') ? 'en' : 'ar';
+      document.getElementById('title').textContent = (lang==='ar')?'تواصل معنا':'Contact Us';
+      document.getElementById('desc').textContent = (lang==='ar')?'محتاج مساعدة؟ عايز تحجز خدمة؟ تقدر تكلمنا على:':'Need help? Want to book a service? Contact us via:';
+      document.getElementById('wa-link').textContent = (lang==='ar')?'💬 واتساب':'💬 WhatsApp';
+      document.getElementById('mail-link').textContent = (lang==='ar')?'📧 البريد الإلكتروني':'📧 Email';
+      document.getElementById('call-link').textContent = (lang==='ar')?'📞 اتصال مباشر':'📞 Call';
+      document.querySelector('.lang-btn').textContent = (lang==='ar')?'🇪🇬':'🇬🇧';
+    }
+
+    // --- Matrix Effect ---
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
-
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
     const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const fontSize = 18;
     const columns = canvas.width / fontSize;
-
-    const drops = [];
-    for (let i = 0; i < columns; i++) drops[i] = 1;
+    const drops = Array.from({ length: columns }).fill(1);
 
     function draw() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       ctx.fillStyle = "#00eaff";
       ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
-          drops[i] = 0;
-        }
-
+      for(let i=0; i<drops.length; i++){
+        const text = letters[Math.floor(Math.random()*letters.length)];
+        ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+        if(drops[i]*fontSize > canvas.height && Math.random() > 0.95) drops[i]=0;
         drops[i]++;
       }
     }
-
     setInterval(draw, 50);
 
     window.addEventListener("resize", () => {
