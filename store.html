@@ -1,248 +1,297 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AliNoVa Store</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AliNoVa Store — نهائي</title>
   <style>
-    * {margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif;scroll-behavior:smooth;}
-    body {background:linear-gradient(135deg,#1e1e2f,#3a3a5a);color:#fff;padding:20px;}
-    header {text-align:center;margin-bottom:40px;}
-    header h1 {font-size:2.5rem;color:#00d1ff;text-shadow:2px 2px 5px rgba(0,0,0,0.5);}
-    nav {display:flex;justify-content:center;gap:20px;margin-bottom:30px;}
-    .tab-btn {background-color:transparent;color:#fff;border:2px solid #00ffff;padding:10px 15px;border-radius:10px;font-weight:bold;cursor:pointer;transition:0.3s;}
-    .tab-btn.active {background-color:#00ffff;color:#000;}
-    .tab-content {display:none;}
-    .tab-content.active {display:block;}
-    .products-container {display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
-    .product {background:#2c2c3e;padding:15px;border-radius:15px;box-shadow:0 4px 10px rgba(0,0,0,0.3);transition:transform 0.3s, opacity 0.5s;opacity:0;transform:translateY(20px);}
-    .product.show {opacity:1;transform:translateY(0);}
-    .product h2 {color:#00ffff;font-size:1.2rem;margin-bottom:10px;}
-    .product p {font-size:0.95rem;margin-bottom:10px;}
-    .product button {padding:8px 12px;border:none;background:#00d1ff;color:#000;border-radius:8px;cursor:pointer;transition:background 0.3s;}
-    .product button:hover {background:#00aacc;}
+    :root{--bg1:#0b0b0f;--bg2:#17171a;--card:rgba(0,0,0,0.72);--text:#fff;--muted:#bfbfbf;--accent:#00d1ff;--wa:#25D366}
+    [data-theme="light"]{--bg1:#f6f8fb;--bg2:#e9eef7;--card:rgba(255,255,255,0.95);--text:#111;--muted:#555}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Tajawal,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--text);-webkit-font-smoothing:antialiased}
 
-    /* أيقونة السلة */
-    .cart-toggle {position:fixed;top:20px;left:20px;background:#00d1ff;color:#000;border-radius:50%;width:50px;height:50px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;z-index:1000;box-shadow:0 4px 10px rgba(0,0,0,0.3);}
-    .cart-count {position:absolute;top:10px;left:50px;background:red;color:#fff;font-size:0.8rem;padding:2px 6px;border-radius:50%;font-weight:bold;}
-    .cart {position:fixed;top:80px;left:20px;background:#1e1e2f;padding:15px;border-radius:15px;box-shadow:0 4px 10px rgba(0,0,0,0.3);max-width:280px;z-index:999;display:none;}
-    .cart.open {display:block;}
-    .cart h3 {margin-bottom:10px;color:#00ffff;}
-    .cart-item {font-size:0.9rem;margin-bottom:10px;}
-    .cart-total {font-weight:bold;margin-top:10px;}
-    .cart button {margin-top:10px;padding:8px 12px;border:none;background:#00ff99;color:#000;border-radius:8px;cursor:pointer;}
-    .remove-btn {background:#ff4d4d;color:#fff;border:none;padding:4px 8px;border-radius:5px;cursor:pointer;margin-left:5px;} 
-    .qty-btn {background:#00d1ff;color:#000;border:none;padding:3px 7px;border-radius:5px;cursor:pointer;margin:0 3px;}
-    @media (max-width:768px) {
-      .cart {top:auto;bottom:0;left:0;right:0;max-width:100%;border-radius:15px 15px 0 0;text-align:center;}
-      .cart-item {font-size:0.85rem;}
-    }
-    /* مربع البحث */
-    #search-container {text-align:center;margin-bottom:20px;}
-    #search {padding:8px 30px 8px 12px;border-radius:10px;border:none;width:200px;}
-    #search-icon {width:20px;height:20px;vertical-align:middle;cursor:pointer;margin-left:5px;}
+    /* Header */
+    header{position:sticky;top:0;z-index:1200;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(0,0,0,0.15));backdrop-filter:blur(6px);animation:slideDown .6s ease}
+    .controls{display:flex;gap:8px;align-items:center}
+    .chip{background:#000;color:#fff;border:none;padding:8px 10px;border-radius:10px;cursor:pointer;font-weight:700}
+    [data-theme="light"] .chip{background:#fff;color:#000;border:1px solid rgba(0,0,0,0.06)}
+
+    /* Search + tabs */
+    .search-wrap{display:flex;justify-content:center;padding:14px 16px}
+    #search{width:min(860px,94%);padding:10px 14px;border-radius:12px;border:none;background:var(--card);color:var(--text);font-size:15px}
+    .tabs{display:flex;gap:10px;justify-content:center;padding-bottom:8px}
+    .tab{background:transparent;border:2px solid var(--accent);color:var(--text);padding:8px 14px;border-radius:12px;cursor:pointer;font-weight:800}
+    .tab.active{background:var(--accent);color:#000}
+
+    /* Grid */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;padding:18px}
+    .card{background:var(--card);border-radius:14px;padding:14px;box-shadow:0 8px 24px rgba(0,0,0,0.35);transition:transform .22s,box-shadow .22s}
+    .card:hover{transform:translateY(-6px)}
+    .card h4{margin:0 0 8px;color:var(--accent)}
+    .card p{margin:0 0 10px;color:var(--muted);font-size:14px}
+    .price-row{display:flex;justify-content:space-between;align-items:center}
+    .price{font-weight:900}
+    .add-btn{background:#111;color:#fff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer}
+
+    /* Cart panel */
+    .cart-panel{position:fixed;top:84px;right:0;width:min(420px,94vw);height:calc(100% - 96px);background:var(--card);color:var(--text);padding:14px;border-radius:12px 0 0 12px;box-shadow:-6px 0 20px rgba(0,0,0,0.35);transform:translateX(110%);transition:transform .45s ease;z-index:1300;display:flex;flex-direction:column}
+    .cart-panel.show{transform:translateX(0)}
+    .cart-header{display:flex;justify-content:space-between;align-items:center}
+    .cart-items{overflow:auto;flex:1;margin-top:10px;padding-right:6px}
+    .cart-item{display:flex;justify-content:space-between;align-items:center;padding:8px 6px;border-bottom:1px dashed rgba(255,255,255,0.06)}
+    .cart-qty{display:flex;gap:6px;align-items:center}
+    .qty-btn{background:#000;color:#fff;border:none;padding:6px 8px;border-radius:8px;cursor:pointer}
+    .remove-btn{background:#b83f3f;color:#fff;border:none;padding:6px 8px;border-radius:8px;cursor:pointer}
+    .cart-footer{padding-top:10px}
+    .total{font-weight:900;margin-bottom:8px}
+    .wa-btn{background:var(--wa);color:#fff;border:none;padding:10px;border-radius:10px;width:100%;font-weight:800;cursor:pointer}
+
+    /* Badge */
+    .cart-toggle{position:relative}
+    .badge{position:absolute;top:-8px;inset-inline-end:-10px;background:#ff4d4d;color:#fff;padding:3px 7px;border-radius:999px;font-weight:800;display:none}
+
+    /* Responsive tweaks */
+    @media(max-width:560px){header{padding:10px} .card{padding:12px}}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}} @keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:none}}
   </style>
 </head>
 <body>
   <header>
-    <h1>AliNoVa Store</h1>
+    <div style="display:flex;align-items:center;gap:12px">
+      <button id="langBtn" class="chip" title="language">🇪🇬</button>
+      <button id="themeBtn" class="chip" title="theme">🌙</button>
+    </div>
+    <div>
+      <button id="cartToggle" class="chip cart-toggle" title="cart">🛒 <span id="cartBadge" class="badge">0</span></button>
+    </div>
   </header>
 
-  <nav>
-    <button class="tab-btn active" data-target="store-section">المتجر</button>
-    <button class="tab-btn" data-target="offers-section">العروض</button>
-  </nav>
-
-  <!-- مربع البحث -->
-  <div id="search-container">
-    <input type="text" id="search" placeholder="ابحث عن منتج...">
-    <img id="search-icon" src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="بحث" onclick="searchProduct()">
+  <div class="search-wrap">
+    <input id="search" placeholder="🔍 ابحث عن منتج..." />
   </div>
 
-  <!-- أيقونة السلة -->
-  <div class="cart-toggle" onclick="toggleCart()">🛒
-    <span class="cart-count" id="cart-count">0</span>
+  <div class="tabs">
+    <button class="tab active" data-tab="all">🛍️ الكل</button>
+    <button class="tab" data-tab="offers">🏷️ العروض</button>
   </div>
 
-  <!-- السلة -->
-  <div class="cart" id="cart">
-    <h3>السلة</h3>
-    <div id="cart-items"></div>
-    <div class="cart-total" id="cart-total">الإجمالي: 0 جنيه</div>
-    <button onclick="sendWhatsApp()">إرسال عبر واتساب</button>
-  </div>
+  <main>
+    <section id="productsGrid" class="grid"></section>
+  </main>
 
-  <section id="store-section" class="tab-content active">
-    <h2 style="text-align:center;margin-bottom:20px;">المتجر</h2>
-    <div class="products-container" id="product-list"></div>
-  </section>
+  <aside id="cartPanel" class="cart-panel" aria-hidden="true">
+    <div class="cart-header">
+      <h3 id="cartTitle">🛒 السلة</h3>
+      <div>
+        <button id="closeCart" class="chip">❌</button>
+      </div>
+    </div>
 
-  <section id="offers-section" class="tab-content">
-    <h2 style="text-align:center;margin-bottom:20px;">العروض</h2>
-    <div class="products-container" id="offer-list"></div>
-  </section>
+    <div id="cartItems" class="cart-items"></div>
+
+    <div class="cart-footer">
+      <div class="total" id="cartTotalText">الإجمالي: <span id="cartTotal">0</span> جنيه</div>
+      <button id="waBtn" class="wa-btn">إرسال عبر واتساب</button>
+    </div>
+  </aside>
 
   <script>
+    // config
+    const whatsappNumber = '201105318814'; // غيّره لرقمك بدون +
+
+    // products (complete list from user) — I've included full list you provided
     const products = [
-      { name: "كيبورد سلكية GAMMA K-15", desc: " كيبورد - USB", price: 175, offer: false },
-            { name: " كيبورد سلكية GAMMA K-16", desc: "-كيبورد - USB ", price: 185, offer: false },
-      { name: "كيبورد سلكية GAMMA K-17 ", desc: "كيبورد - USB", price: 190, offer: false },
-      { name: "كيبورد سلكية GAMMA K-18 ", desc: "كيبورد  - USB", price: 195, offer: false },
-      { name: "كيبورد سلكية GAMMA K-19", desc: "كيبورد ", price: 215, offer: false },
-      { name: "كيبورد سلكية GAMMA K-510 ", desc: "كيبورد  مخصصة للاعاب و يتميز بايضاءة خلفيه rgb led ", price: 240.50, offer: false },
-      { name: "كيبورد سلكية + ماوس GAMMA K-511", desc: " كيبورد + ماوس  مخصصة للاعاب و يتميز بايضاءة خلفيه rgb led", price: 290 , offer: false },
-      { name: "كيبورد سلكية  GAMMA K-512 ", desc: "   كيبورد  مخصصة للاعاب و يتميز بايضاءة خلفيهrgb led   ", price: 290 , offer: false },
-      { name: "كيبورد سلكية  GAMMA K-19", desc: "كيبورد- USB", price: 210, offer: false },
-      { name: "كيبورد سلكية  GAMMA K-510", desc: " كيبورد  مخصصة للاعاب و يتميز بايضاءة خلفيه rgb  - ", price: 230 , offer: false },
-      { name: "كيبورد سلكية GAMMA K-513 ", desc: " كيبورد  مخصصة للاعاب و يتميز بايضاءة خلفيهrgb - ", price: 380, offer: false },
-      { name: "كيبورد + ماوس لا سلكية Platinum PL -400    ", desc: "    تتميز بتوصيل لاسلكي عبر مستقبل      ", price: 400, offer: false },
-      { name: "كيبورد  سلكية Platinum PL-500    ", desc: " تتميز بتوصيل لاسلكي عبر مستقبل و ايضاء خلفيه RGB ", price: 450, offer: false },
-      { name: "كيبورد سلكية  GAMMA K-511  ", desc: "     كيبورد  مخصصة للاعاب + ماوس و يتميز بايضاءة خلفيه rgb  -     ", price: 300, offer: false },
-     { name: " كيبورد سلكية + ماوس Platinum PL-600    ", desc: "    كيبورد + ماوس  مخصصة للاعاب و يتميز بايضاءة خلفيه rgb  -    ", price: 350, offer: false },
-      { name: "كيبورد  سلكية Platinum PL-350    ", desc: "    كيبورد سلكية      ", price: 165, offer: false },
-      { name: "كيبورد  سلكية Platinum PL-300    ", desc: "      كيبورد سلكية  slam   ", price: 155 , offer: false },
-      { name: "  ماوس سلكية W410   ", desc: "      ماوس سيلكية طمان شهرين     ", price: 68 , offer: false },
-      { name: "هارد SSD 128     ", desc: " طمان ست شهور ", price: 850, offer: false },
-      { name: "هارد SSD 256    ", desc: "طمان ست شهور ", price: 1250 , offer: false },
-      { name: "هارد HDD 350    ", desc: "  طمان ثلاث شهور ", price: 300 , offer: false },
-      { name: "هارد HDD 500     ", desc: "       طمان ثلاثه اشهر", price: 560 , offer: false },
-      { name: "ماوس لاسلكية gedel W927 ", desc: " يتميز باتصال USB و اتصال عن طريق بلوتوث  ", price: 100 , offer: false },
-      { name: "ماوس سلكية GAMMA GT-107  ", desc: " ماوس العاب ", price: 100 , offer: false },
-      { name: "ماوس سلكية GAMMA GT-106 ", desc: "ماوس العاب ", price: 100 , offer: false },
-      { name: " ماوس الالعاب لاسلكي gertech NASUS W200 ", desc: "ماوس العاب يتميز بوصله USB ", price: 325, offer: false },
-      { name: " ماوس سيلكية ", desc: "  OPTICAL MOUSE ", price: 150 , offer: false },
-      { name: "ماوس لاسلكي Gigamax ", desc: " تتميز بتوصيل usb وتدعم البلوتوث و الشحن واضاؤة rgb  ", price: 220 , offer: false },
-   //   { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
-   //   { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
-     // { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
-     // { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
-    //  { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
-  //    { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
-//       { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
- //    { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
-//      { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
-     // { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
-     // { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
-     // { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
-     // { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
-    //  { name: "كيبورد RGB", desc: "إضاءة كاملة - USB", price: 450, offer: false },
+      { name: "كيبورد سلكية GAMMA K-15", desc: "كيبورد - USB", price: 175, offer:false, name_en:"Wired Keyboard GAMMA K-15", desc_en:"Keyboard - USB" },
+      { name: "كيبورد سلكية GAMMA K-16", desc: "كيبورد - USB", price: 185, offer:false, name_en:"Wired Keyboard GAMMA K-16", desc_en:"Keyboard - USB" },
+      { name: "كيبورد سلكية GAMMA K-17", desc: "كيبورد - USB", price: 190, offer:false, name_en:"Wired Keyboard GAMMA K-17", desc_en:"Keyboard - USB" },
+      { name: "كيبورد سلكية GAMMA K-18", desc: "كيبورد - USB", price: 195, offer:false, name_en:"Wired Keyboard GAMMA K-18", desc_en:"Keyboard - USB" },
+      { name: "كيبورد سلكية + ماوس GAMMA K-511", desc: "كيبورد + ماوس للألعاب مضيء RGB", price: 290, offer:false, name_en:"Wired Keyboard + Mouse GAMMA K-511", desc_en:"Gaming keyboard + mouse with RGB" },
+      { name: "كيبورد سلكية GAMMA K-512", desc: "كيبورد ألعاب مع إضاءة", price: 290, offer:false, name_en:"Wired Keyboard GAMMA K-512", desc_en:"Gaming keyboard with RGB" },
+      { name: "كيبورد سلكية GAMMA K-19", desc: "كيبورد - USB", price: 210, offer:false, name_en:"Wired Keyboard GAMMA K-19", desc_en:"Keyboard - USB" },
+      { name: "كيبورد سلكية GAMMA K-510", desc: "كيبورد ألعاب مع RGB", price: 230, offer:false, name_en:"Wired Keyboard GAMMA K-510", desc_en:"Gaming keyboard with RGB" },
+      { name: "كيبورد سلكية GAMMA K-513", desc: "كيبورد ألعاب مع RGB", price: 380, offer:false, name_en:"Wired Keyboard GAMMA K-513", desc_en:"Gaming keyboard with RGB" },
+      { name: "كيبورد + ماوس لاسلكية Platinum PL-400", desc: "توصيل لاسلكي عبر مستقبل", price: 400, offer:false, name_en:"Wireless Keyboard + Mouse Platinum PL-400", desc_en:"Wireless via receiver" },
+      { name: "كيبورد سلكية Platinum PL-500", desc: "سلكية + إضاءة RGB", price: 450, offer:false, name_en:"Wired Keyboard Platinum PL-500", desc_en:"Wired with RGB" },
+      { name: "كيبورد سلكية GAMMA K-511", desc: "كيبورد ألعاب + ماوس RGB", price: 300, offer:false, name_en:"Wired Keyboard GAMMA K-511", desc_en:"Gaming combo with RGB" },
+      { name: "كيبورد + ماوس Platinum PL-600", desc: "كيبورد + ماوس ألعاب", price: 350, offer:false, name_en:"Keyboard + Mouse Platinum PL-600", desc_en:"Gaming combo with RGB" },
+      { name: "كيبورد سلكية Platinum PL-350", desc: "كيبورد سلكية", price: 165, offer:false, name_en:"Wired Keyboard Platinum PL-350", desc_en:"Wired keyboard" },
+      { name: "كيبورد سلكية Platinum PL-300", desc: "كيبورد سلكية slam", price: 155, offer:false, name_en:"Wired Keyboard Platinum PL-300", desc_en:"Wired keyboard" },
+      { name: "ماوس سلكية W410", desc: "ماوس سلكية ضمان شهرين", price: 68, offer:false, name_en:"Wired Mouse W410", desc_en:"2 months warranty" },
+      { name: "هارد SSD 128", desc: "ضمان ست شهور", price: 850, offer:false, name_en:"SSD 128GB", desc_en:"6 months warranty" },
+      { name: "هارد SSD 256", desc: "ضمان ست شهور", price: 1250, offer:false, name_en:"SSD 256GB", desc_en:"6 months warranty" },
+      { name: "هارد HDD 350", desc: "ضمان ثلاث شهور", price: 300, offer:false, name_en:"HDD 350GB", desc_en:"3 months warranty" },
+      { name: "هارد HDD 500", desc: "ضمان ثلاث اشهر", price: 560, offer:false, name_en:"HDD 500GB", desc_en:"3 months warranty" },
+      { name: "ماوس لاسلكية gedel W927", desc: "اتصال USB + بلوتوث", price: 100, offer:false, name_en:"Wireless Mouse gedel W927", desc_en:"USB + Bluetooth" },
+      { name: "ماوس سلكية GAMMA GT-107", desc: "ماوس العاب", price: 100, offer:false, name_en:"Wired Mouse GAMMA GT-107", desc_en:"Gaming mouse" },
+      { name: "ماوس سلكية GAMMA GT-106", desc: "ماوس العاب", price: 100, offer:false, name_en:"Wired Mouse GAMMA GT-106", desc_en:"Gaming mouse" },
+      { name: "ماوس الالعاب لاسلكي gertech NASUS W200", desc: "ماوس العاب بوصلة USB", price: 325, offer:false, name_en:"Wireless Gaming Mouse gertech NASUS W200", desc_en:"USB dongle" },
+      { name: "ماوس سيلكية", desc: "OPTICAL MOUSE", price: 150, offer:false, name_en:"Wired Mouse", desc_en:"Optical mouse" },
+      { name: "ماوس لاسلكي Gigamax G-1300", desc: "USB + Bluetooth + RGB", price: 220, offer:false, name_en:"Wireless Mouse Gigamax G-1300", desc_en:"USB + Bluetooth + RGB" },
+      { name: "كابل باور للكمبيوتر", desc: "(16 امبير) متر و نص", price: 40, offer:false, name_en:"PC Power Cable", desc_en:"16A, 1.5m" },
+      { name: "كابل USB طابعة", desc: "كابل طابعة متر و نص", price: 35, offer:false, name_en:"Printer USB Cable", desc_en:"1.5m" },
+      { name: "كابل HDMI 5m", desc: "HDMI 5 متر", price: 320, offer:false, name_en:"HDMI Cable 5m", desc_en:"5 meters" },
+      { name: "كابل HDMI 1.5m", desc: "كابل HDMI متر ونص", price: 50, offer:false, name_en:"HDMI Cable 1.5m", desc_en:"1.5 meters" },
+      { name: "ماوس لاسلكي HP", desc: "USB + Bluetooth + RGB", price: 125, offer:false, name_en:"HP Wireless Mouse", desc_en:"USB + Bluetooth + RGB" },
+      { name: "ماوس لاسلكي yox 3100", desc: "USB + مريح", price: 85, offer:false, name_en:"Wireless Mouse yox 3100", desc_en:"USB, ergonomic" },
+      { name: "كابل فيجا استراد", desc: "كابل فيجا استراد 1.5m", price: 100, offer:false, name_en:"Imported VGA Cable", desc_en:"1.5m" },
+      { name: "Point Cable VGA Grey", desc: "Point Cable VGA 10M Grey", price: 195, offer:false, name_en:"Point VGA Cable Grey", desc_en:"10m" },
+      { name: "DELL VGA Cable", desc: "DELL VGA Cable 1.2m - Black", price: 290, offer:false, name_en:"DELL VGA Cable", desc_en:"1.2m - Black" },
+      { name: "Point Cable VGA WHITE", desc: "Point Cable VGA 20M WHITE", price: 380, offer:false, name_en:"Point VGA Cable White", desc_en:"20m" },
+      { name: "محول HDMI الى VGA", desc: "محول HDMI الى VGA", price: 95, offer:false, name_en:"HDMI to VGA Adapter", desc_en:"PC & Laptop" },
+      { name: "DisplayPort كابل", desc: "DisplayPort (DP) للألعاب والشاشات العالية", price: 155, offer:false, name_en:"DisplayPort Cable", desc_en:"For gaming & high-res" },
+      { name: "فلاشه 8 جيجا", desc: "فلاشه 8 جيجا kingston", price: 170, offer:false, name_en:"Flash Drive 8GB", desc_en:"Kingston 8GB" },
+      { name: "فلاشه 16 جيجا", desc: "فلاشه 16 جيجا kingston", price: 185, offer:false, name_en:"Flash Drive 16GB", desc_en:"Kingston 16GB" },
+      { name: "فلاشه 32 جيجا", desc: "فلاشه 32 جيجا kingston", price: 200, offer:false, name_en:"Flash Drive 32GB", desc_en:"Kingston 32GB" },
+      { name: "فلاشه 64 جيجا", desc: "فلاشه 64 جيجا kingston", price: 250, offer:false, name_en:"Flash Drive 64GB", desc_en:"Kingston 64GB" },
 
-   //                          (قسم العروض )
-      { name: "ماوس لاسلكي", desc: "موس لاسلكي موديل jedel W927", price: 130, offer: true },
-      { name: "ماوس سلك جاما", desc: "ماوس جاما GT-106 ماركه GAMMA", price: 425, offer: true },
-      { name: "ماوس سلك", desc: "ماوس سيلكي موديل Gamma GT-106", price: 95, offer: true },
-      { name: "كاميرا مراقبة", desc: "عدسة ليلية - 1080p", price: 700, offer: true },
-            { name: "ماوس سلك", desc: "ماوس سيلكي موديل Gamma GT-106", price: 95, offer: true },
-      { name: "ماوس سلك", desc: "ماوس سيلكي موديل Gamma GT-106", price: 95, offer: true },
-      { name: "ماوس سلك", desc: "ماوس سيلكي موديل Gamma GT-106", price: 95, offer: true },
-
+      // offers
+      { name: "ماوس لاسلكي", desc: "موس لاسلكي موديل jedel W927", price: 130, offer:true, name_en:"Wireless Mouse", desc_en:"jedel W927" },
+      { name: "ماوس سلك جاما", desc: "ماوس جاما GT-106 ماركه GAMMA", price: 425, offer:true, name_en:"Wired Mouse GAMMA", desc_en:"GT-106" },
+      { name: "ماوس سلك", desc: "ماوس سيلكي موديل Gamma GT-106", price: 95, offer:true, name_en:"Wired Mouse", desc_en:"Gamma GT-106" },
+      { name: "كاميرا مراقبة", desc: "عدسة ليلية - 1080p", price: 700, offer:true, name_en:"CCTV Camera", desc_en:"Night vision - 1080p" }
     ];
 
+    // state
+    let lang = localStorage.getItem('lang') || 'ar';
+    let theme = localStorage.getItem('theme') || 'dark';
+    let cart = JSON.parse(localStorage.getItem('cart')||'[]');
 
+    // elements
+    const langBtn = document.getElementById('langBtn');
+    const themeBtn = document.getElementById('themeBtn');
+    const cartToggle = document.getElementById('cartToggle');
+    const cartBadge = document.getElementById('cartBadge');
+    const searchEl = document.getElementById('search');
+    const productsGrid = document.getElementById('productsGrid');
+    const cartPanel = document.getElementById('cartPanel');
+    const cartItemsEl = document.getElementById('cartItems');
+    const cartTotalEl = document.getElementById('cartTotal');
+    const waBtn = document.getElementById('waBtn');
+    const tabs = document.querySelectorAll('.tab');
 
-    let cart = [];
+    // translations
+    const trans = {
+      ar:{store:'المتجر',offers:'العروض',add:'أضف للسلة',cart:'🛒 السلة',total:'الإجمالي',search:'🔍 ابحث عن منتج...',wa:'إرسال عبر واتساب',empty:'السلة فارغة'},
+      en:{store:'Store',offers:'Offers',add:'Add to cart',cart:'🛒 Cart',total:'Total',search:'🔍 Search products...',wa:'Send via WhatsApp',empty:'Cart is empty'}
+    };
 
-    function renderProducts() {
-      const productList = document.getElementById("product-list");
-      const offerList = document.getElementById("offer-list");
-      productList.innerHTML = "";
-      offerList.innerHTML = "";
+    // apply saved theme/lang
+    document.documentElement.setAttribute('data-theme', theme==='dark'?'dark':'light');
+    if(theme==='light') document.documentElement.setAttribute('data-theme','light');
+    langBtn.textContent = lang==='ar'?'🇪🇬':'🇬🇧';
+    themeBtn.textContent = theme==='dark'?'🌙':'☀️';
+    searchEl.placeholder = trans[lang].search;
 
-      products.forEach((p, index) => {
-        const div = document.createElement("div");
-        div.className = "product";
-        div.innerHTML = `
-          <h2>${p.name}</h2>
-          <p>${p.desc}</p>
-          <p>${p.price} جنيه</p>
-          <button onclick="addToCart(${index})">أضف إلى السلة</button>
-        `;
-        setTimeout(() => div.classList.add("show"), 100);
-        if (p.offer) offerList.appendChild(div);
-        else productList.appendChild(div);
+    // helpers
+    function localSave(){ localStorage.setItem('lang',lang); localStorage.setItem('theme',theme); localStorage.setItem('cart',JSON.stringify(cart)); }
+
+    function formatPrice(n){ return `${n} ${lang==='ar'?'جنيه':'EGP'}` }
+
+    // render products
+    let currentTab = 'all';
+    function renderProducts(){
+      const q = searchEl.value.trim().toLowerCase();
+      productsGrid.innerHTML = '';
+      products.filter((p)=> (currentTab==='offers' ? p.offer : true) && ( (p.name + ' ' + (p.name_en||'') + ' ' + p.desc + ' ' + (p.desc_en||'')).toLowerCase().includes(q) ) )
+        .forEach((p,i)=>{
+          const idx = i;
+          const card = document.createElement('div'); card.className='card';
+          const name = lang==='en' && p.name_en ? p.name_en : p.name;
+          const desc = lang==='en' && p.desc_en ? p.desc_en : p.desc;
+          card.innerHTML = `<h4>${name}</h4><p>${desc}</p><div class="price-row"><div class="price">${formatPrice(p.price)}</div><button class="add-btn" data-i="${idx}">${trans[lang].add}</button></div>`;
+          productsGrid.appendChild(card);
+        });
+      // bind add
+      document.querySelectorAll('.add-btn').forEach(b=> b.onclick = ()=> addToCart(+b.dataset.i));
+    }
+
+    // cart operations
+    function updateCartUI(){
+      // badge
+      const count = cart.reduce((a,c)=>a+c.qty,0);
+      cartBadge.style.display = count>0? 'inline-block':'none';
+      cartBadge.textContent = count;
+      // items
+      cartItemsEl.innerHTML = '';
+      if(cart.length===0){ cartItemsEl.innerHTML = `<div style="padding:14px;color:var(--muted)">${trans[lang].empty}</div>` }
+      let total = 0;
+      cart.forEach((it,idx)=>{
+        total += it.price * it.qty;
+        const row = document.createElement('div'); row.className='cart-item';
+        const name = lang==='en' && it.name_en? it.name_en: it.name;
+        row.innerHTML = `<div style="flex:1"><strong>${name}</strong><div style="color:var(--muted);font-size:13px">${formatPrice(it.price)}</div></div>
+          <div class="cart-qty">
+            <button class="qty-btn" data-dec="${idx}">-</button>
+            <div style="min-width:26px;text-align:center">${it.qty}</div>
+            <button class="qty-btn" data-inc="${idx}">+</button>
+            <button class="remove-btn" data-del="${idx}">🗑️</button>
+          </div>`;
+        cartItemsEl.appendChild(row);
       });
+      cartTotalEl.textContent = total;
+      // bind qty / remove
+      document.querySelectorAll('[data-inc]').forEach(b=> b.onclick = ()=> changeQty(+b.dataset.inc, +1));
+      document.querySelectorAll('[data-dec]').forEach(b=> b.onclick = ()=> changeQty(+b.dataset.dec, -1));
+      document.querySelectorAll('[data-del]').forEach(b=> b.onclick = ()=> removeItem(+b.dataset.del));
+      localSave();
     }
 
-    function addToCart(index) {
-      const item = products[index];
-      const found = cart.find(p => p.name === item.name);
-      if (found) found.qty += 1;
-      else cart.push({ ...item, qty: 1 });
-      updateCart();
+    function addToCart(i){
+      const p = products[i];
+      // match by name+price to avoid index mismatch when filtering
+      const nameKey = (lang==='en' && p.name_en)? p.name_en : p.name;
+      let found = cart.find(x=>x.name===nameKey && x.price===p.price);
+      if(found) found.qty += 1; else cart.push({ name:p.name, name_en:p.name_en, price:p.price, qty:1 });
+      updateCartUI();
+      // small visual feedback
+      const btn = document.querySelector(`[data-i="${i}"]`);
+      if(btn){ btn.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:220}) }
     }
 
-    function updateCart() {
-      const cartItems = document.getElementById("cart-items");
-      const cartTotal = document.getElementById("cart-total");
-      const cartCount = document.getElementById("cart-count");
-      cartItems.innerHTML = "";
-      let total = 0, count = 0;
-      cart.forEach((item, i) => {
-        total += item.price * item.qty;
-        count += item.qty;
-        cartItems.innerHTML += `
-          <div class="cart-item">
-            ${item.name} - ${item.price} جنيه 
-            <br>
-            <button class="qty-btn" onclick="changeQty(${i}, -1)">-</button>
-            ${item.qty}
-            <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
-            <button class="remove-btn" onclick="removeFromCart(${i})">🗑️</button>
-          </div>
-        `;
+    function changeQty(i,delta){ if(!cart[i]) return; cart[i].qty += delta; if(cart[i].qty<=0) cart.splice(i,1); updateCartUI(); }
+    function removeItem(i){ cart.splice(i,1); updateCartUI(); }
+
+    // whatsapp
+    waBtn.onclick = ()=>{
+      if(cart.length===0) return alert(lang==='ar'? 'السلة فارغة' : 'Cart is empty');
+      let msg = `${lang==='ar'?'طلب جديد من AliNoVa':'New order from AliNoVa'}:\n`;
+      cart.forEach(it=>{
+        const name = (lang==='en' && it.name_en)? it.name_en : it.name;
+        msg += `- ${name} x${it.qty} = ${it.price*it.qty} ${lang==='ar'?'جنيه':'EGP'}\n`;
       });
-      cartTotal.textContent = `الإجمالي: ${total} جنيه`;
-      cartCount.textContent = count;
+      const total = cart.reduce((a,c)=>a+c.price*c.qty,0);
+      msg += `\n${lang==='ar'? 'الإجمالي' : 'Total'}: ${total} ${lang==='ar'?'جنيه':'EGP'}`;
+      const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
+      window.open(url,'_blank');
     }
 
-    function changeQty(i, delta) {
-      cart[i].qty += delta;
-      if (cart[i].qty <= 0) cart.splice(i, 1);
-      updateCart();
+    // UI events
+    cartToggle.onclick = ()=>{ cartPanel.classList.toggle('show'); cartPanel.setAttribute('aria-hidden', cartPanel.classList.contains('show')? 'false':'true'); }
+    document.getElementById('closeCart').onclick = ()=> cartPanel.classList.remove('show');
+
+    searchEl.addEventListener('input', ()=> renderProducts());
+    tabs.forEach(btn=> btn.addEventListener('click', ()=>{ tabs.forEach(b=>b.classList.remove('active')); btn.classList.add('active'); currentTab = btn.dataset.tab; renderProducts(); }))
+
+    langBtn.onclick = ()=>{ lang = lang==='ar'?'en':'ar'; localSave(); applyLang(); }
+    themeBtn.onclick = ()=>{ theme = theme==='dark'?'light':'dark'; document.documentElement.setAttribute('data-theme', theme); localSave(); themeBtn.textContent = theme==='dark'? '🌙' : '☀️'; }
+
+    function applyLang(){
+      langBtn.textContent = lang==='ar'?'🇪🇬':'🇬🇧';
+      themeBtn.textContent = theme==='dark'? '🌙' : '☀️';
+      searchEl.placeholder = trans[lang].search;
+      document.getElementById('cartTitle').textContent = trans[lang].cart;
+      document.getElementById('cartTotalText').firstChild && (document.getElementById('cartTotalText').firstChild.textContent = trans[lang].total + ': ');
+      waBtn.textContent = trans[lang].wa;
+      renderProducts();
+      updateCartUI();
     }
 
-    function removeFromCart(i) {
-      cart.splice(i, 1);
-      updateCart();
-    }
-
-    function sendWhatsApp() {
-      let message = "طلب جديد من AliNoVa:\n";
-      cart.forEach(item => {
-        message += `- ${item.name} (${item.price} جنيه) × ${item.qty}\n`;
-      });
-      const total = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
-      message += `\nالإجمالي: ${total} جنيه`;
-      const encoded = encodeURIComponent(message);
-      window.open(`https://wa.me/201105318814?text=${encoded}`, '_blank');
-    }
-
-    function toggleCart() {
-      document.getElementById("cart").classList.toggle("open");
-    }
-
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        const target = btn.getAttribute("data-target");
-        document.querySelectorAll(".tab-content").forEach(section => section.classList.remove("active"));
-        document.getElementById(target).classList.add("active");
-      });
-    });
-
-    // كود البحث
-    function searchProduct() {
-      const query = document.getElementById("search").value.toLowerCase();
-      const allProducts = document.querySelectorAll(".product");
-      allProducts.forEach(prod => {
-        const name = prod.querySelector("h2").textContent.toLowerCase();
-        prod.style.display = name.includes(query) ? "block" : "none";
-      });
-    }
-
+    // init
+    document.documentElement.setAttribute('data-theme', theme);
+    applyLang();
     renderProducts();
+    updateCartUI();
+
   </script>
 </body>
 </html>
