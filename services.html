@@ -7,61 +7,63 @@
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --bg1: #000;
+      --bg2: #0c0c0c;
+      --card-bg: rgba(0,0,0,0.7);
+      --card-border: #00eaff;
+      --text: #fff;
+      --muted: #ccc;
+      --accent: #00eaff;
+    }
+    [data-theme="light"] {
+      --bg1: #f5f7fb;
+      --bg2: #e9edf5;
+      --card-bg: rgba(255,255,255,0.92);
+      --card-border: #00d1ff;
+      --text: #111;
+      --muted: #555;
+      --accent: #00d1ff;
+    }
+
     body {
       margin: 0;
       font-family: 'Tajawal', sans-serif;
-      background: radial-gradient(ellipse at center, #000000 0%, #0c0c0c 100%);
-      background-attachment: fixed;
-      color: #fff;
+      background: radial-gradient(ellipse at center, var(--bg1) 0%, var(--bg2) 100%);
+      color: var(--text);
       overflow-x: hidden;
       scroll-behavior: smooth;
       position: relative;
     }
 
-    .dark-toggle {
+    .dark-toggle, .lang-toggle {
       position: fixed;
       top: 20px;
-      right: 20px;
-      background: #00eaff;
-      color: black;
       padding: 10px 15px;
       border-radius: 8px;
       cursor: pointer;
       z-index: 1002;
       font-weight: bold;
-      box-shadow: 0 0 10px #00eaff;
+      box-shadow: 0 0 10px var(--accent);
+      background: var(--accent);
+      color: black;
+      margin-left: 10px;
     }
 
-    .smoke {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('images/smoke.gif') center center / cover no-repeat;
-      opacity: 0.05;
-      z-index: -1;
-    }
+    .dark-toggle { right: 20px; }
+    .lang-toggle { right: 150px; }
 
-    .matrix {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-    }
-
-    canvas {
-      display: block;
-    }
+    .smoke, .matrix { position: fixed; top:0; left:0; width:100%; height:100%; }
+    .smoke { background: url('images/smoke.gif') center center / cover no-repeat; opacity:0.05; z-index:-1; }
+    .matrix { z-index:-2; }
+    canvas { display:block; }
 
     h1 {
       text-align: center;
       font-size: 38px;
       margin-top: 60px;
-      color: #00eaff;
-      text-shadow: 0 0 10px #00eaff;
+      color: var(--accent);
+      text-shadow: 0 0 10px var(--accent);
     }
 
     .services {
@@ -75,13 +77,13 @@
     }
 
     .card {
-      background: rgba(0, 0, 0, 0.7);
-      border: 2px solid #00eaff;
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
       border-radius: 15px;
       padding: 20px;
       text-align: center;
-      box-shadow: 0 0 15px #00eaff;
-      transition: transform 0.3s ease;
+      box-shadow: 0 0 15px var(--accent);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
       text-decoration: none;
       display: flex;
@@ -91,36 +93,18 @@
       min-width: 260px;
       max-width: 300px;
       flex: 1 1 280px;
+      color: var(--text);
     }
 
     .card:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 25px #00eaff;
+      box-shadow: 0 0 25px var(--accent);
     }
 
-    .card i {
-      font-size: 42px;
-      margin-bottom: 10px;
-      color: #00eaff;
-    }
-
-    .card h3 {
-      margin: 10px 0 5px;
-      font-size: 24px;
-      color: #00eaff;
-    }
-
-    .card p {
-      font-size: 16px;
-      color: #ccc;
-      margin-bottom: 10px;
-    }
-
-    .card small {
-      font-size: 14px;
-      color: #00eaff;
-      margin-top: 10px;
-    }
+    .card i { font-size: 42px; margin-bottom: 10px; color: var(--accent); }
+    .card h3 { margin: 10px 0 5px; font-size: 24px; color: var(--accent); }
+    .card p { font-size: 16px; color: var(--muted); margin-bottom: 10px; }
+    .card small { font-size: 14px; color: var(--accent); margin-top: 10px; }
 
     .whatsapp-float {
       position: fixed;
@@ -141,64 +125,66 @@
     }
   </style>
 </head>
-<body>
+<body data-theme="dark">
   <div class="smoke"></div>
   <div class="matrix"><canvas id="matrix"></canvas></div>
   <div class="dark-toggle" onclick="toggleDarkMode()">الوضع الليلي</div>
+  <div class="lang-toggle" onclick="toggleLang()">🇪🇬</div>
   <a href="https://wa.me/201105318814" class="whatsapp-float" target="_blank">💬</a>
 
-  <h1>خدمات AliNoVa</h1>
+  <h1 id="pageTitle">خدمات AliNoVa</h1>
 
-  <div class="services">
-    <a class="card" href="https://wa.me/201105318814?text=أرغب%20في%20تركيب%20كاميرات" target="_blank">
-      <i class="fas fa-video"></i>
-      <h3>تركيب كاميرات</h3>
-      <p>تركيب وضبط زوايا الكاميرات بأنظمة مراقبة احترافية.</p>
-      <small>اضغط للتفاصيل</small>
-    </a>
-    <a class="card" href="https://wa.me/201105318814?text=أحتاج%20صيانة%20كمبيوتر" target="_blank">
-      <i class="fas fa-laptop"></i>
-      <h3>صيانة كمبيوتر</h3>
-      <p>تنظيف وصيانة الأجهزة بكفاءة وحماية متقدمة.</p>
-      <small>اضغط للتفاصيل</small>
-    </a>
-    <a class="card" href="https://wa.me/201105318814?text=أحتاج%20تنصيب%20برامج" target="_blank">
-      <i class="fas fa-download"></i>
-      <h3>تنصيب برامج</h3>
-      <p>تثبيت وتحديث البرامج الأساسية والمتخصصة.</p>
-      <small>اضغط للتفاصيل</small>
-    </a>
-    <a class="card" href="https://wa.me/201105318814?text=أحتاج%20صيانة%20طابعة" target="_blank">
-      <i class="fas fa-print"></i>
-      <h3>صيانة طابعات</h3>
-      <p>حل مشاكل الطابعات الشائعة وصيانة احترافية.</p>
-      <small>اضغط للتفاصيل</small>
-    </a>
-    <a class="card" href="https://wa.me/201105318814?text=أريد%20تعبئة%20حبر" target="_blank">
-      <i class="fas fa-tint"></i>
-      <h3>تعبئة الحبر</h3>
-      <p>تعبئة الحبر وإعادة تشغيل الكارتريدج بنجاح.</p>
-      <small>اضغط للتفاصيل</small>
-    </a>
-    <a class="card" href="https://wa.me/201105318814?text=أحتاج%20تمديد%20كابلات" target="_blank">
-      <i class="fas fa-network-wired"></i>
-      <h3>تمديد كابلات</h3>
-      <p>تمديد كابلات BNC وRJ احترافي وتنظيم عالي.</p>
-      <small>اضغط للتفاصيل</small>
-    </a>
-    <a class="card" style="margin: 0 auto;" href="https://wa.me/201105318814?text=أحتاج%20فورمات%20للجهاز%20مع%20حماية" target="_blank">
-      <i class="fas fa-shield-alt"></i>
-      <h3>فورمات + حماية</h3>
-      <p>تهيئة النظام بالكامل وتثبيت برامج حماية موثوقة.</p>
-      <small>اضغط للتفاصيل</small>
-    </a>
-  </div>
+  <div class="services" id="servicesContainer"></div>
 
   <script>
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
+    // --- Data ---
+    const services = [
+      { icon:'fa-video', ar:'تركيب كاميرات', en:'Camera Installation', desc_ar:'تركيب وضبط زوايا الكاميرات بأنظمة مراقبة احترافية.', desc_en:'Professional camera installation & setup.', link:'https://wa.me/201105318814?text=أرغب%20في%20تركيب%20كاميرات' },
+      { icon:'fa-laptop', ar:'صيانة كمبيوتر', en:'Computer Service', desc_ar:'تنظيف وصيانة الأجهزة بكفاءة وحماية متقدمة.', desc_en:'Computer cleaning & service.', link:'https://wa.me/201105318814?text=أحتاج%20صيانة%20كمبيوتر' },
+      { icon:'fa-download', ar:'تنصيب برامج', en:'Software Installation', desc_ar:'تثبيت وتحديث البرامج الأساسية والمتخصصة.', desc_en:'Install & update essential software.', link:'https://wa.me/201105318814?text=أحتاج%20تنصيب%20برامج' },
+      { icon:'fa-print', ar:'صيانة طابعات', en:'Printer Service', desc_ar:'حل مشاكل الطابعات الشائعة وصيانة احترافية.', desc_en:'Printer troubleshooting & service.', link:'https://wa.me/201105318814?text=أحتاج%20صيانة%20طابعة' },
+      { icon:'fa-tint', ar:'تعبئة الحبر', en:'Ink Refill', desc_ar:'تعبئة الحبر وإعادة تشغيل الكارتريدج بنجاح.', desc_en:'Refill ink cartridges successfully.', link:'https://wa.me/201105318814?text=أريد%20تعبئة%20حبر' },
+      { icon:'fa-network-wired', ar:'تمديد كابلات', en:'Cable Setup', desc_ar:'تمديد كابلات BNC وRJ احترافي وتنظيم عالي.', desc_en:'Professional cable installation & organization.', link:'https://wa.me/201105318814?text=أحتاج%20تمديد%20كابلات' },
+      { icon:'fa-shield-alt', ar:'فورمات + حماية', en:'Format + Protection', desc_ar:'تهيئة النظام بالكامل وتثبيت برامج حماية موثوقة.', desc_en:'Full system format & security setup.', link:'https://wa.me/201105318814?text=أحتاج%20فورمات%20للجهاز%20مع%20حماية' }
+    ];
+
+    // --- State ---
+    let lang = 'ar';
+    let theme = 'dark';
+
+    // --- Functions ---
+    function renderServices() {
+      const container = document.getElementById('servicesContainer');
+      container.innerHTML = '';
+      services.forEach(s=>{
+        const name = (lang==='ar') ? s.ar : s.en;
+        const desc = (lang==='ar') ? s.desc_ar : s.desc_en;
+        container.innerHTML += `
+          <a class="card" href="${s.link}" target="_blank">
+            <i class="fas ${s.icon}"></i>
+            <h3>${name}</h3>
+            <p>${desc}</p>
+            <small>${lang==='ar'?'اضغط للتفاصيل':'Click for details'}</small>
+          </a>
+        `;
+      });
+      document.getElementById('pageTitle').textContent = (lang==='ar')?'خدمات AliNoVa':'AliNoVa Services';
     }
 
+    function toggleDarkMode(){
+      theme = (theme==='dark') ? 'light':'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+
+    function toggleLang(){
+      lang = (lang==='ar')?'en':'ar';
+      document.querySelector('.lang-toggle').textContent = (lang==='ar')?'🇪🇬':'🇬🇧';
+      renderServices();
+    }
+
+    renderServices();
+
+    // --- Matrix effect ---
     const canvas = document.getElementById("matrix");
     const ctx = canvas.getContext("2d");
     canvas.height = window.innerHeight;
@@ -220,7 +206,6 @@
         drops[i]++;
       }
     }
-
     setInterval(draw, 33);
   </script>
 </body>
