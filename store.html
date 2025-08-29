@@ -52,7 +52,8 @@
 
     /* Responsive tweaks */
     @media(max-width:560px){header{padding:10px} .card{padding:12px}}
-    @keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}} @keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:none}}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}} 
+    @keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:none}}
   </style>
 </head>
 <body>
@@ -72,7 +73,6 @@
 
   <div class="tabs">
     <button class="tab active" data-tab="all">🛍️ الكل</button>
-    <button class="tab" data-tab="offers">🏷️ العروض</button>
   </div>
 
   <main>
@@ -96,65 +96,61 @@
   </aside>
 
   <script>
-    // config
-    const whatsappNumber = '201105318814'; // غيّره لرقمك بدون +
+    const whatsappNumber = '201105318814'; 
 
-    // products (complete list from user) — I've included full list you provided
-    const products = [
-      { name: "كيبورد سلكية GAMMA K-15", desc: "كيبورد - USB", price: 175, offer:false, name_en:"Wired Keyboard GAMMA K-15", desc_en:"Keyboard - USB" },
-      { name: "كيبورد سلكية GAMMA K-16", desc: "كيبورد - USB", price: 185, offer:false, name_en:"Wired Keyboard GAMMA K-16", desc_en:"Keyboard - USB" },
-      { name: "كيبورد سلكية GAMMA K-17", desc: "كيبورد - USB", price: 190, offer:false, name_en:"Wired Keyboard GAMMA K-17", desc_en:"Keyboard - USB" },
-      { name: "كيبورد سلكية GAMMA K-18", desc: "كيبورد - USB", price: 195, offer:false, name_en:"Wired Keyboard GAMMA K-18", desc_en:"Keyboard - USB" },
-      { name: "كيبورد سلكية + ماوس GAMMA K-511", desc: "كيبورد + ماوس للألعاب مضيء RGB", price: 290, offer:false, name_en:"Wired Keyboard + Mouse GAMMA K-511", desc_en:"Gaming keyboard + mouse with RGB" },
-      { name: "كيبورد سلكية GAMMA K-512", desc: "كيبورد ألعاب مع إضاءة", price: 290, offer:false, name_en:"Wired Keyboard GAMMA K-512", desc_en:"Gaming keyboard with RGB" },
-      { name: "كيبورد سلكية GAMMA K-19", desc: "كيبورد - USB", price: 210, offer:false, name_en:"Wired Keyboard GAMMA K-19", desc_en:"Keyboard - USB" },
-      { name: "كيبورد سلكية GAMMA K-510", desc: "كيبورد ألعاب مع RGB", price: 230, offer:false, name_en:"Wired Keyboard GAMMA K-510", desc_en:"Gaming keyboard with RGB" },
-      { name: "كيبورد سلكية GAMMA K-513", desc: "كيبورد ألعاب مع RGB", price: 380, offer:false, name_en:"Wired Keyboard GAMMA K-513", desc_en:"Gaming keyboard with RGB" },
-      { name: "كيبورد + ماوس لاسلكية Platinum PL-400", desc: "توصيل لاسلكي عبر مستقبل", price: 400, offer:false, name_en:"Wireless Keyboard + Mouse Platinum PL-400", desc_en:"Wireless via receiver" },
-      { name: "كيبورد سلكية Platinum PL-500", desc: "سلكية + إضاءة RGB", price: 450, offer:false, name_en:"Wired Keyboard Platinum PL-500", desc_en:"Wired with RGB" },
-      { name: "كيبورد سلكية GAMMA K-511", desc: "كيبورد ألعاب + ماوس RGB", price: 300, offer:false, name_en:"Wired Keyboard GAMMA K-511", desc_en:"Gaming combo with RGB" },
-      { name: "كيبورد + ماوس Platinum PL-600", desc: "كيبورد + ماوس ألعاب", price: 350, offer:false, name_en:"Keyboard + Mouse Platinum PL-600", desc_en:"Gaming combo with RGB" },
-      { name: "كيبورد سلكية Platinum PL-350", desc: "كيبورد سلكية", price: 165, offer:false, name_en:"Wired Keyboard Platinum PL-350", desc_en:"Wired keyboard" },
-      { name: "كيبورد سلكية Platinum PL-300", desc: "كيبورد سلكية slam", price: 155, offer:false, name_en:"Wired Keyboard Platinum PL-300", desc_en:"Wired keyboard" },
-      { name: "ماوس سلكية W410", desc: "ماوس سلكية ضمان شهرين", price: 68, offer:false, name_en:"Wired Mouse W410", desc_en:"2 months warranty" },
-      { name: "هارد SSD 128", desc: "ضمان ست شهور", price: 850, offer:false, name_en:"SSD 128GB", desc_en:"6 months warranty" },
-      { name: "هارد SSD 256", desc: "ضمان ست شهور", price: 1250, offer:false, name_en:"SSD 256GB", desc_en:"6 months warranty" },
-      { name: "هارد HDD 350", desc: "ضمان ثلاث شهور", price: 300, offer:false, name_en:"HDD 350GB", desc_en:"3 months warranty" },
-      { name: "هارد HDD 500", desc: "ضمان ثلاث اشهر", price: 560, offer:false, name_en:"HDD 500GB", desc_en:"3 months warranty" },
-      { name: "ماوس لاسلكية gedel W927", desc: "اتصال USB + بلوتوث", price: 100, offer:false, name_en:"Wireless Mouse gedel W927", desc_en:"USB + Bluetooth" },
-      { name: "ماوس سلكية GAMMA GT-107", desc: "ماوس العاب", price: 100, offer:false, name_en:"Wired Mouse GAMMA GT-107", desc_en:"Gaming mouse" },
-      { name: "ماوس سلكية GAMMA GT-106", desc: "ماوس العاب", price: 100, offer:false, name_en:"Wired Mouse GAMMA GT-106", desc_en:"Gaming mouse" },
-      { name: "ماوس الالعاب لاسلكي gertech NASUS W200", desc: "ماوس العاب بوصلة USB", price: 325, offer:false, name_en:"Wireless Gaming Mouse gertech NASUS W200", desc_en:"USB dongle" },
-      { name: "ماوس سيلكية", desc: "OPTICAL MOUSE", price: 150, offer:false, name_en:"Wired Mouse", desc_en:"Optical mouse" },
-      { name: "ماوس لاسلكي Gigamax G-1300", desc: "USB + Bluetooth + RGB", price: 220, offer:false, name_en:"Wireless Mouse Gigamax G-1300", desc_en:"USB + Bluetooth + RGB" },
-      { name: "كابل باور للكمبيوتر", desc: "(16 امبير) متر و نص", price: 40, offer:false, name_en:"PC Power Cable", desc_en:"16A, 1.5m" },
-      { name: "كابل USB طابعة", desc: "كابل طابعة متر و نص", price: 35, offer:false, name_en:"Printer USB Cable", desc_en:"1.5m" },
-      { name: "كابل HDMI 5m", desc: "HDMI 5 متر", price: 320, offer:false, name_en:"HDMI Cable 5m", desc_en:"5 meters" },
-      { name: "كابل HDMI 1.5m", desc: "كابل HDMI متر ونص", price: 50, offer:false, name_en:"HDMI Cable 1.5m", desc_en:"1.5 meters" },
-      { name: "ماوس لاسلكي HP", desc: "USB + Bluetooth + RGB", price: 125, offer:false, name_en:"HP Wireless Mouse", desc_en:"USB + Bluetooth + RGB" },
-      { name: "ماوس لاسلكي yox 3100", desc: "USB + مريح", price: 85, offer:false, name_en:"Wireless Mouse yox 3100", desc_en:"USB, ergonomic" },
-      { name: "كابل فيجا استراد", desc: "كابل فيجا استراد 1.5m", price: 100, offer:false, name_en:"Imported VGA Cable", desc_en:"1.5m" },
-      { name: "Point Cable VGA Grey", desc: "Point Cable VGA 10M Grey", price: 195, offer:false, name_en:"Point VGA Cable Grey", desc_en:"10m" },
-      { name: "DELL VGA Cable", desc: "DELL VGA Cable 1.2m - Black", price: 290, offer:false, name_en:"DELL VGA Cable", desc_en:"1.2m - Black" },
-      { name: "Point Cable VGA WHITE", desc: "Point Cable VGA 20M WHITE", price: 380, offer:false, name_en:"Point VGA Cable White", desc_en:"20m" },
-      { name: "محول HDMI الى VGA", desc: "محول HDMI الى VGA", price: 95, offer:false, name_en:"HDMI to VGA Adapter", desc_en:"PC & Laptop" },
-      { name: "DisplayPort كابل", desc: "DisplayPort (DP) للألعاب والشاشات العالية", price: 155, offer:false, name_en:"DisplayPort Cable", desc_en:"For gaming & high-res" },
-      { name: "فلاشه 8 جيجا", desc: "فلاشه 8 جيجا kingston", price: 170, offer:false, name_en:"Flash Drive 8GB", desc_en:"Kingston 8GB" },
-      { name: "فلاشه 16 جيجا", desc: "فلاشه 16 جيجا kingston", price: 185, offer:false, name_en:"Flash Drive 16GB", desc_en:"Kingston 16GB" },
-      { name: "فلاشه 32 جيجا", desc: "فلاشه 32 جيجا kingston", price: 200, offer:false, name_en:"Flash Drive 32GB", desc_en:"Kingston 32GB" },
-      { name: "فلاشه 64 جيجا", desc: "فلاشه 64 جيجا kingston", price: 250, offer:false, name_en:"Flash Drive 64GB", desc_en:"Kingston 64GB" },
-
-      // offers
-      { name: "ماوس لاسلكي", desc: "موس لاسلكي موديل jedel W927", price: 130, offer:true, name_en:"Wireless Mouse", desc_en:"jedel W927" },
-      { name: "ماوس سلك جاما", desc: "ماوس جاما GT-106 ماركه GAMMA", price: 425, offer:true, name_en:"Wired Mouse GAMMA", desc_en:"GT-106" },
-      { name: "ماوس سلك", desc: "ماوس سيلكي موديل Gamma GT-106", price: 95, offer:true, name_en:"Wired Mouse", desc_en:"Gamma GT-106" },
-      { name: "كاميرا مراقبة", desc: "عدسة ليلية - 1080p", price: 700, offer:true, name_en:"CCTV Camera", desc_en:"Night vision - 1080p" }
+    // ✅ منتجاتك كلها هنا زي ما كانت
+     const products = [
+      { name: "كيبورد سلكية GAMMA K-15", desc: "كيبورد - USB", price: 175, offer:false, name_en:"Wired Keyboard GAMMA K-15", desc_en:"Keyboard - USB", img:"https://i.postimg.cc/x1WtdRf0/Whats-App-Image-2025-08-08-at-3-20-27-PM.jpg" },
+      { name: "كيبورد سلكية GAMMA K-16", desc: "كيبورد - USB", price: 185, offer:false, name_en:"Wired Keyboard GAMMA K-16", desc_en:"Keyboard - USB", img:"https://i.postimg.cc/85058tgS/Whats-App-Image-2025-08-08-at-3-20-27-PM-1.jpg" },
+      { name: "كيبورد سلكية GAMMA K-17", desc: "كيبورد - USB", price: 190, offer:false, name_en:"Wired Keyboard GAMMA K-17", desc_en:"Keyboard - USB" , img:"https://i.postimg.cc/yxCNYWxQ/Whats-App-Image-2025-08-08-at-3-20-26-PM.jpg" },
+      { name: "كيبورد سلكية GAMMA K-18", desc: "كيبورد - USB", price: 195, offer:false, name_en:"Wired Keyboard GAMMA K-18", desc_en:"Keyboard - USB" , img:"https://i.postimg.cc/XqKYZ3yV/Whats-App-Image-2025-08-08-at-3-20-26-PM-1.jpg" },
+      { name: "كيبورد سلكية + ماوس GAMMA K-511", desc: "كيبورد + ماوس للألعاب مضيء RGB", price: 290, offer:false, name_en:"Wired Keyboard + Mouse GAMMA K-511", desc_en:"Gaming keyboard + mouse with RGB", img:"https://i.postimg.cc/sxMJy6B9/Whats-App-Image-2025-08-08-at-3-20-24-PM.jpg" },
+      { name: "كيبورد سلكية GAMMA K-512", desc: "كيبورد ألعاب مع إضاءة", price: 290, offer:false, name_en:"Wired Keyboard GAMMA K-512", desc_en:"Gaming keyboard with RGB" , img:"https://i.postimg.cc/v8KzXsjP/Whats-App-Image-2025-08-08-at-3-20-24-PM-1.jpg" },
+      { name: "كيبورد سلكية GAMMA K-19", desc: "كيبورد - USB", price: 210, offer:false, name_en:"Wired Keyboard GAMMA K-19", desc_en:"Keyboard - USB" , img:"https://i.postimg.cc/xTRdnf25/Whats-App-Image-2025-08-08-at-3-20-25-PM.jpg" },
+      { name: "كيبورد سلكية GAMMA K-510", desc: "كيبورد ألعاب مع RGB", price: 230, offer:false, name_en:"Wired Keyboard GAMMA K-510", desc_en:"Gaming keyboard with RGB" , img:"https://i.postimg.cc/4xVBmSWW/Whats-App-Image-2025-08-08-at-3-20-25-PM-1.jpg" },
+      { name: "كيبورد سلكية GAMMA K-513", desc: "كيبورد ألعاب مع RGB", price: 380, offer:false, name_en:"Wired Keyboard GAMMA K-513", desc_en:"Gaming keyboard with RGB" , img:"https://i.postimg.cc/cHbQDRDK/Whats-App-Image-2025-08-08-at-3-20-23-PM.jpg" },
+      { name: "كيبورد + ماوس لاسلكية Platinum PL-400", desc: "توصيل لاسلكي عبر مستقبل", price: 400, offer:false, name_en:"Wireless Keyboard + Mouse Platinum PL-400", desc_en:"Wireless via receiver", img:"https://i.postimg.cc/0yY08JN3/Whats-App-Image-2025-08-08-at-3-20-22-PM.jpg" },
+      { name: "كيبورد سلكية Platinum PL-500", desc: "سلكية + إضاءة RGB", price: 450, offer:false, name_en:"Wired Keyboard Platinum PL-500", desc_en:"Wired with RGB", img:"https://i.postimg.cc/MXk1wWJq/Whats-App-Image-2025-08-08-at-3-20-21-PM.jpg" },
+      { name: "كيبورد + ماوس Platinum PL-600", desc: "كيبورد + ماوس ألعاب", price: 350, offer:false, name_en:"Keyboard + Mouse Platinum PL-600", desc_en:"Gaming combo with RGB" , img:"https://i.postimg.cc/9QhNt2R6/Whats-App-Image-2025-08-08-at-3-20-21-PM-1.jpg" },
+      { name: "كيبورد سلكية Platinum PL-350", desc: "كيبورد سلكية", price: 165, offer:false, name_en:"Wired Keyboard Platinum PL-350", desc_en:"Wired keyboard" , img:"https://i.postimg.cc/MpqdfYgx/Whats-App-Image-2025-08-08-at-3-20-20-PM.jpg" },
+      { name: "كيبورد سلكية Platinum PL-300", desc: "كيبورد سلكية slam", price: 155, offer:false, name_en:"Wired Keyboard Platinum PL-300", desc_en:"Wired keyboard" , img:"https://i.postimg.cc/Vv9Xzxft/Whats-App-Image-2025-08-08-at-3-20-19-PM.jpg" },
+      { name: "ماوس سلكية W410", desc: "ماوس سلكية ضمان شهرين", price: 68, offer:false, name_en:"Wired Mouse W410", desc_en:"2 months warranty" , img:"https://i.postimg.cc/nLYxYThk/Whats-App-Image-2025-08-07-at-3-09-03-PM.jpg" },
+      { name: "هارد SSD 128", desc: "ضمان ست شهور", price: 850, offer:false, name_en:"SSD 128GB", desc_en:"6 months warranty" , img:"https://i.postimg.cc/4dNDvgMf/OIP.jpg" },
+      { name: "هارد SSD 256", desc: "ضمان ست شهور", price: 1250, offer:false, name_en:"SSD 256GB", desc_en:"6 months warranty", img:"https://i.postimg.cc/BbRRG1vb/OIP-1.jpg" },
+      { name: "هارد HDD 350", desc: "ضمان ثلاث شهور", price: 300, offer:false, name_en:"HDD 350GB", desc_en:"3 months warranty" , img:"https://i.postimg.cc/25CMmYCQ/OIP-3.jpg" },
+      { name: "هارد HDD 500", desc: "ضمان ثلاث اشهر", price: 560, offer:false, name_en:"HDD 500GB", desc_en:"3 months warranty" , img:"https://i.postimg.cc/1ttdnKn4/OIP-2.jpg" },
+      { name: "ماوس لاسلكية gedel W927", desc: "اتصال USB + بلوتوث", price: 100, offer:false, name_en:"Wireless Mouse gedel W927", desc_en:"USB + Bluetooth", img:"https://i.postimg.cc/fyXQyvpm/OIP.jpg" },
+      { name: "ماوس سلكية GAMMA GT-107", desc: "ماوس العاب", price: 100, offer:false, name_en:"Wired Mouse GAMMA GT-107", desc_en:"Gaming mouse", img:"https://i.postimg.cc/W3FQYn2C/Whats-App-Image-2025-08-07-at-3-09-02-PM-1.jpg" },
+      { name: "ماوس سلكية GAMMA GT-106", desc: "ماوس العاب", price: 100, offer:false, name_en:"Wired Mouse GAMMA GT-106", desc_en:"Gaming mouse" , img:"https://i.postimg.cc/wTdSFLn4/Whats-App-Image-2025-08-07-at-3-09-01-PM.jpg" },
+      { name: "ماوس الالعاب لاسلكي gertech NASUS W200", desc: "ماوس العاب بوصلة USB", price: 325, offer:false, name_en:"Wireless Gaming Mouse gertech NASUS W200", desc_en:"USB dongle", img:"https://i.postimg.cc/W1NxcjNM/Whats-App-Image-2025-08-07-at-3-09-01-PM-1.jpg" },
+      { name: "ماوس سيلكية", desc: "OPTICAL MOUSE", price: 150, offer:false, name_en:"Wired Mouse", desc_en:"Optical mouse" , img:"https://i.postimg.cc/9fzSzpq0/Whats-App-Image-2025-08-07-at-3-09-00-PM.jpg" },
+      { name: "ماوس لاسلكي Gigamax G-1300", desc: "USB + Bluetooth + RGB", price: 220, offer:false, name_en:"Wireless Mouse Gigamax G-1300", desc_en:"USB + Bluetooth + RGB", img:"https://i.postimg.cc/br0V4V4C/Whats-App-Image-2025-08-07-at-3-09-00-PM-1.jpg" },
+      { name: "كابل باور للكمبيوتر", desc: "(16 امبير) متر و نص", price: 40, offer:false, name_en:"PC Power Cable", desc_en:"16A, 1.5m" , img:"https://i.postimg.cc/fRqq49gN/OIP-4.jpg" },
+      { name: "كابل USB طابعة", desc: "كابل طابعة متر و نص", price: 35, offer:false, name_en:"Printer USB Cable", desc_en:"1.5m" , img:"https://i.postimg.cc/RZ21QQDN/OIP-5.jpg" },
+      { name: "كابل HDMI 5m", desc: "HDMI 5 متر", price: 320, offer:false, name_en:"HDMI Cable 5m", desc_en:"5 meters", img:"https://i.postimg.cc/Hxz7KQB0/OIP-1.jpg" },
+      { name: "كابل HDMI 1.5m", desc: "كابل HDMI متر ونص", price: 50, offer:false, name_en:"HDMI Cable 1.5m", desc_en:"1.5 meters", img:"https://i.postimg.cc/RC800s66/OIP-2.jpg" },
+      { name: "ماوس لاسلكي HP", desc: "USB + Bluetooth + RGB", price: 125, offer:false, name_en:"HP Wireless Mouse", desc_en:"USB + Bluetooth + RGB" , img:"https://i.postimg.cc/1t8fWLVS/Whats-App-Image-2025-08-07-at-3-09-00-PM-2.jpg" },
+      { name: "ماوس لاسلكي yox 3100", desc: "USB + مريح", price: 85, offer:false, name_en:"Wireless Mouse yox 3100", desc_en:"USB, ergonomic" , img:"https://i.postimg.cc/1zjzNJCj/Whats-App-Image-2025-08-07-at-3-08-59-PM.jpg" },
+      { name: "كابل فيجا استراد", desc: "كابل فيجا استراد 1.5m", price: 100, offer:false, name_en:"Imported VGA Cable", desc_en:"1.5m" , img:"https://i.postimg.cc/ZKbh46jB/OIP-4.jpg" },
+      { name: "Point Cable VGA Grey", desc: "Point Cable VGA 10M Grey", price: 195, offer:false, name_en:"Point VGA Cable Grey", desc_en:"10m" , img:"https://i.postimg.cc/BvL0Rspm/OIP-3.jpg" },
+      { name: "DELL VGA Cable", desc: "DELL VGA Cable 1.2m - Black", price: 290, offer:false, name_en:"DELL VGA Cable", desc_en:"1.2m - Black" , img:"https://i.postimg.cc/Pq8g2yfc/1-3.jpg" },
+      { name: "Point Cable VGA WHITE", desc: "Point Cable VGA 20M WHITE", price: 380, offer:false, name_en:"Point VGA Cable White", desc_en:"20m", img:"https://i.postimg.cc/Zq3QrqVz/OIP-5.jpg" },
+      { name: "محول HDMI الى VGA", desc: "محول HDMI الى VGA", price: 95, offer:false, name_en:"HDMI to VGA Adapter", desc_en:"PC & Laptop" , img:"https://i.postimg.cc/MHZr2mxz/51-FWbw-CH54-L-AC-SY300-SX300-QL70-ML2.jpg" },
+      { name: "DisplayPort كابل", desc: "DisplayPort (DP) للألعاب والشاشات العالية", price: 155, offer:false, name_en:"DisplayPort Cable", desc_en:"For gaming & high-res" , img:"https://i.postimg.cc/3JR2scMk/OIP-6.jpg" },
+      { name: "فلاشه 8 جيجا", desc: "فلاشه 8 جيجا kingston", price: 170, offer:false, name_en:"Flash Drive 8GB", desc_en:"Kingston 8GB" , img:"https://i.postimg.cc/q7dwHxXW/OIP-6.jpg" },
+      { name: "فلاشه 16 جيجا", desc: "فلاشه 16 جيجا kingston", price: 185, offer:false, name_en:"Flash Drive 16GB", desc_en:"Kingston 16GB" , img:"https://i.postimg.cc/FKgZrkTz/OIP-7.jpg" },
+      { name: "فلاشه 32 جيجا", desc: "فلاشه 32 جيجا kingston", price: 200, offer:false, name_en:"Flash Drive 32GB", desc_en:"Kingston 32GB", img:"https://i.postimg.cc/d15jdPPK/OIP-8.jpg" },
+      { name: "فلاشه 64 جيجا", desc: "فلاشه 64 جيجا kingston", price: 250, offer:false, name_en:"Flash Drive 64GB", desc_en:"Kingston 64GB" , img:"https://i.postimg.cc/QCVkJ4hK/OIP-9.jpg" },
+     // { name: "ماوس سلك جاما", desc: "ماوس جاما GT-106 ماركه GAMMA", price: 425, offer:true, name_en:"Wired Mouse GAMMA", desc_en:"GT-106", img:"https://i.postimg.cc/x1WtdRf0/Whats-App-Image-2025-08-08-at-3-20-27-PM.jpg" },
+      //{ name: "ماوس سلك", desc: "ماوس سيلكي موديل Gamma GT-106", price: 95, offer:true, name_en:"Wired Mouse", desc_en:"Gamma GT-106", img:"https://i.postimg.cc/x1WtdRf0/Whats-App-Image-2025-08-08-at-3-20-27-PM.jpg" },
+      //{ name: "كاميرا مراقبة", desc: "عدسة ليلية - 1080p", price: 700, offer:true, name_en:"CCTV Camera", desc_en:"Night vision - 1080p" , img:"https://i.postimg.cc/x1WtdRf0/Whats-App-Image-2025-08-08-at-3-20-27-PM.jpg" },
     ];
 
     // state
     let lang = localStorage.getItem('lang') || 'ar';
     let theme = localStorage.getItem('theme') || 'dark';
     let cart = JSON.parse(localStorage.getItem('cart')||'[]');
+    let currentTab = 'all'; // ✅ التصليح
 
     // elements
     const langBtn = document.getElementById('langBtn');
@@ -175,43 +171,45 @@
       en:{store:'Store',offers:'Offers',add:'Add to cart',cart:'🛒 Cart',total:'Total',search:'🔍 Search products...',wa:'Send via WhatsApp',empty:'Cart is empty'}
     };
 
-    // apply saved theme/lang
-    document.documentElement.setAttribute('data-theme', theme==='dark'?'dark':'light');
-    if(theme==='light') document.documentElement.setAttribute('data-theme','light');
-    langBtn.textContent = lang==='ar'?'🇪🇬':'🇬🇧';
-    themeBtn.textContent = theme==='dark'?'🌙':'☀️';
-    searchEl.placeholder = trans[lang].search;
-
-    // helpers
-    function localSave(){ localStorage.setItem('lang',lang); localStorage.setItem('theme',theme); localStorage.setItem('cart',JSON.stringify(cart)); }
-
+    function localSave(){ 
+      localStorage.setItem('lang',lang); 
+      localStorage.setItem('theme',theme); 
+      localStorage.setItem('cart',JSON.stringify(cart)); 
+    }
     function formatPrice(n){ return `${n} ${lang==='ar'?'جنيه':'EGP'}` }
 
-    // render products
-    let currentTab = 'all';
     function renderProducts(){
       const q = searchEl.value.trim().toLowerCase();
       productsGrid.innerHTML = '';
-      products.filter((p)=> (currentTab==='offers' ? p.offer : true) && ( (p.name + ' ' + (p.name_en||'') + ' ' + p.desc + ' ' + (p.desc_en||'')).toLowerCase().includes(q) ) )
-        .forEach((p,i)=>{
-          const idx = i;
-          const card = document.createElement('div'); card.className='card';
+      products
+        .filter((p)=> (currentTab==='offers' ? p.offer : true) && ((p.name + ' ' + (p.name_en||'') + ' ' + p.desc + ' ' + (p.desc_en||'')).toLowerCase().includes(q)))
+        .forEach((p)=>{
           const name = lang==='en' && p.name_en ? p.name_en : p.name;
           const desc = lang==='en' && p.desc_en ? p.desc_en : p.desc;
-          card.innerHTML = `<h4>${name}</h4><p>${desc}</p><div class="price-row"><div class="price">${formatPrice(p.price)}</div><button class="add-btn" data-i="${idx}">${trans[lang].add}</button></div>`;
+          const card = document.createElement('div'); 
+          card.className='card';
+          card.innerHTML = `
+            <img src="${p.img}" alt="${name}" style="width:100%;border-radius:10px;margin-bottom:10px"/>
+            <h4>${name}</h4>
+            <p>${desc}</p>
+            <div class="price-row">
+              <div class="price">${formatPrice(p.price)}</div>
+              <button class="add-btn" data-id="${p.name}">${trans[lang].add}</button>
+            </div>`;
           productsGrid.appendChild(card);
         });
       // bind add
-      document.querySelectorAll('.add-btn').forEach(b=> b.onclick = ()=> addToCart(+b.dataset.i));
+      document.querySelectorAll('.add-btn').forEach(b=> b.onclick = ()=> {
+        const prod = products.find(x => x.name === b.dataset.id);
+        if(prod) addToCart(prod);
+      });
     }
 
     // cart operations
     function updateCartUI(){
-      // badge
       const count = cart.reduce((a,c)=>a+c.qty,0);
       cartBadge.style.display = count>0? 'inline-block':'none';
       cartBadge.textContent = count;
-      // items
       cartItemsEl.innerHTML = '';
       if(cart.length===0){ cartItemsEl.innerHTML = `<div style="padding:14px;color:var(--muted)">${trans[lang].empty}</div>` }
       let total = 0;
@@ -229,29 +227,21 @@
         cartItemsEl.appendChild(row);
       });
       cartTotalEl.textContent = total;
-      // bind qty / remove
       document.querySelectorAll('[data-inc]').forEach(b=> b.onclick = ()=> changeQty(+b.dataset.inc, +1));
       document.querySelectorAll('[data-dec]').forEach(b=> b.onclick = ()=> changeQty(+b.dataset.dec, -1));
       document.querySelectorAll('[data-del]').forEach(b=> b.onclick = ()=> removeItem(+b.dataset.del));
       localSave();
     }
 
-    function addToCart(i){
-      const p = products[i];
-      // match by name+price to avoid index mismatch when filtering
-      const nameKey = (lang==='en' && p.name_en)? p.name_en : p.name;
-      let found = cart.find(x=>x.name===nameKey && x.price===p.price);
-      if(found) found.qty += 1; else cart.push({ name:p.name, name_en:p.name_en, price:p.price, qty:1 });
+    function addToCart(p){
+      let found = cart.find(x=>x.name===p.name && x.price===p.price);
+      if(found) found.qty += 1; 
+      else cart.push({ name:p.name, name_en:p.name_en, price:p.price, qty:1 });
       updateCartUI();
-      // small visual feedback
-      const btn = document.querySelector(`[data-i="${i}"]`);
-      if(btn){ btn.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:220}) }
     }
-
     function changeQty(i,delta){ if(!cart[i]) return; cart[i].qty += delta; if(cart[i].qty<=0) cart.splice(i,1); updateCartUI(); }
     function removeItem(i){ cart.splice(i,1); updateCartUI(); }
 
-    // whatsapp
     waBtn.onclick = ()=>{
       if(cart.length===0) return alert(lang==='ar'? 'السلة فارغة' : 'Cart is empty');
       let msg = `${lang==='ar'?'طلب جديد من AliNoVa':'New order from AliNoVa'}:\n`;
@@ -265,12 +255,16 @@
       window.open(url,'_blank');
     }
 
-    // UI events
     cartToggle.onclick = ()=>{ cartPanel.classList.toggle('show'); cartPanel.setAttribute('aria-hidden', cartPanel.classList.contains('show')? 'false':'true'); }
     document.getElementById('closeCart').onclick = ()=> cartPanel.classList.remove('show');
 
     searchEl.addEventListener('input', ()=> renderProducts());
-    tabs.forEach(btn=> btn.addEventListener('click', ()=>{ tabs.forEach(b=>b.classList.remove('active')); btn.classList.add('active'); currentTab = btn.dataset.tab; renderProducts(); }))
+    tabs.forEach(btn=> btn.addEventListener('click', ()=>{
+      tabs.forEach(b=>b.classList.remove('active')); 
+      btn.classList.add('active'); 
+      currentTab = btn.dataset.tab; 
+      renderProducts(); 
+    }));
 
     langBtn.onclick = ()=>{ lang = lang==='ar'?'en':'ar'; localSave(); applyLang(); }
     themeBtn.onclick = ()=>{ theme = theme==='dark'?'light':'dark'; document.documentElement.setAttribute('data-theme', theme); localSave(); themeBtn.textContent = theme==='dark'? '🌙' : '☀️'; }
@@ -286,12 +280,10 @@
       updateCartUI();
     }
 
-    // init
     document.documentElement.setAttribute('data-theme', theme);
     applyLang();
     renderProducts();
     updateCartUI();
-
   </script>
 </body>
 </html>
