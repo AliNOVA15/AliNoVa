@@ -14,7 +14,6 @@
       --card-bg: #0f1620;
       --muted: #cfcfcf;
     }
-    /* light theme variables */
     .light-theme{
       --bg: #ffffff;
       --text: #0b0b0b;
@@ -36,7 +35,6 @@
       transition: background 0.25s ease, color 0.25s ease;
     }
 
-    /* language box */
     .lang-box {
       position: fixed;
       top: 14px;
@@ -64,7 +62,6 @@
     }
     .lang-btn.active { outline: 2px solid var(--accent); }
 
-    /* theme toggle button */
     .theme-toggle {
       position: fixed;
       top: 20px;
@@ -117,24 +114,44 @@
     .social-links a { margin: 0 15px; font-size: 26px; color: var(--accent); transition: .25s; }
     .social-links a:hover { transform: translateY(-3px); }
 
-    /* small screens */
-    @media (max-width: 480px) {
-      .lang-box { top:10px; left:10px; }
-      .theme-toggle { top:10px; right:10px; padding:8px 10px; }
+    /* التوقيع الاحترافي */
+    .signature-box{
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.45);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      z-index: 1500;
+      transition: .25s ease;
     }
+    .signature-box:hover{
+      background: rgba(0,0,0,0.7);
+      transform: translateY(-3px);
+    }
+    .signature-box span{
+      color: var(--accent);
+      font-weight: bold;
+    }
+
   </style>
 </head>
+
 <body>
+
   <div class="matrix"><canvas id="matrix"></canvas></div>
   <div class="smoke" id="smoke"></div>
 
   <!-- language selector -->
-  <div class="lang-box" role="navigation" aria-label="language switcher">
+  <div class="lang-box">
     <button class="lang-btn btn-ar" data-lang="ar">🇪🇬 العربية</button>
     <button class="lang-btn btn-en" data-lang="en">🇬🇧 English</button>
   </div>
 
-  <!-- theme toggle (text is set from JS so it's translated correctly) -->
   <button class="theme-toggle" id="themeToggle">الوضع الليلي</button>
 
   <a href="https://wa.me/201105318814" class="whatsapp-float" target="_blank">💬</a>
@@ -151,8 +168,12 @@
     </div>
   </div>
 
+  <!-- التوقيع الاحترافي -->
+  <div class="signature-box">
+    Made by <span>ALI KHALID</span>
+  </div>
+
   <script>
-    /* ---------- translations (i18n) ---------- */
     const translations = {
       ar: {
         enable_dark: "تفعيل الوضع الليلي",
@@ -172,7 +193,6 @@
       }
     };
 
-    /* ---------- language switching ---------- */
     const btnAr = document.querySelector('.btn-ar');
     const btnEn = document.querySelector('.btn-en');
 
@@ -187,7 +207,6 @@
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       (lang === 'ar' ? btnAr : btnEn).classList.add('active');
       localStorage.setItem('site_lang', lang);
-      // update theme button label according to current theme
       updateThemeButtonText();
     }
 
@@ -195,10 +214,9 @@
       b.addEventListener('click', ()=> applyTranslations(b.dataset.lang));
     });
 
-    /* ---------- theme handling (dark / light) ---------- */
     const themeToggle = document.getElementById('themeToggle');
 
-    function setTheme(theme){ // theme = 'dark' or 'light'
+    function setTheme(theme){
       if(theme === 'light') document.body.classList.add('light-theme');
       else document.body.classList.remove('light-theme');
       localStorage.setItem('site_theme', theme);
@@ -209,7 +227,6 @@
       const lang = localStorage.getItem('site_lang') || 'ar';
       const t = translations[lang] || translations.ar;
       const currentTheme = localStorage.getItem('site_theme') || 'dark';
-      // show action that will happen when clicked
       themeToggle.textContent = (currentTheme === 'dark' ? t.enable_light : t.enable_dark);
     }
 
@@ -221,13 +238,11 @@
 
     themeToggle.addEventListener('click', toggleTheme);
 
-    // load saved language & theme (defaults)
     const savedLang = localStorage.getItem('site_lang') || 'ar';
     applyTranslations(savedLang);
     const savedTheme = localStorage.getItem('site_theme') || 'dark';
     setTheme(savedTheme);
 
-    /* ---------- matrix background (responsive & safe) ---------- */
     (function(){
       const canvas = document.getElementById("matrix");
       if(!canvas) return;
@@ -237,8 +252,8 @@
       let drops = [];
 
       function resize(){
-        canvas.width = window.innerWidth || document.documentElement.clientWidth;
-        canvas.height = window.innerHeight || document.documentElement.clientHeight;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
         cols = Math.floor(canvas.width / fontSize);
         drops = new Array(cols).fill(1);
       }
@@ -249,10 +264,11 @@
       function draw(){
         ctx.fillStyle = "rgba(0, 0, 0, 0.06)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        // if light theme, use darker matrix; if dark, use cyan
+
         const theme = localStorage.getItem('site_theme') || 'dark';
         ctx.fillStyle = (theme === 'light') ? "#006b99" : "#00eaff";
         ctx.font = fontSize + "px monospace";
+
         for(let i=0;i<drops.length;i++){
           const text = letters[Math.floor(Math.random() * letters.length)];
           ctx.fillText(text, i * fontSize, drops[i] * fontSize);
@@ -264,5 +280,6 @@
       requestAnimationFrame(draw);
     })();
   </script>
+
 </body>
 </html>
